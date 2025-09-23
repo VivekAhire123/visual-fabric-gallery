@@ -1,12 +1,53 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Hero } from "@/components/Hero";
+import { FabricUpload } from "@/components/FabricUpload";
+import { FabricGallery } from "@/components/FabricGallery";
+import { SocialMediaModal } from "@/components/SocialMediaModal";
+
+interface FabricItem {
+  id: string;
+  name: string;
+  image: string;
+  instagramUrl: string;
+  pinterestUrl: string;
+  youtubeUrl: string;
+}
 
 const Index = () => {
+  const [fabricItems, setFabricItems] = useState<FabricItem[]>([]);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<FabricItem | null>(null);
+
+  const handleUploadSubmit = (item: FabricItem) => {
+    setFabricItems(prev => [...prev, item]);
+  };
+
+  const handleItemClick = (item: FabricItem) => {
+    setSelectedItem(item);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Hero onUploadClick={() => setIsUploadOpen(true)} />
+      
+      <FabricGallery 
+        items={fabricItems}
+        onItemClick={handleItemClick}
+      />
+
+      {isUploadOpen && (
+        <FabricUpload
+          onClose={() => setIsUploadOpen(false)}
+          onSubmit={handleUploadSubmit}
+        />
+      )}
+
+      {selectedItem && (
+        <SocialMediaModal
+          item={selectedItem}
+          onClose={() => setSelectedItem(null)}
+        />
+      )}
     </div>
   );
 };
