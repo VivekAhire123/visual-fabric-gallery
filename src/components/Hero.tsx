@@ -22,80 +22,106 @@ export const Hero = ({ onUploadClick }: HeroProps) => {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 sm:px-6">
-        <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 tracking-tight">
-          Tata Matching
-          <span className="block bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
-            Center
-          </span>
-        </h1>
+      <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4 sm:px-6 animate-fade-in">
+        <div className="mb-8">
+          <h1 className="font-serif text-4xl sm:text-6xl lg:text-8xl font-bold mb-6 tracking-tight leading-tight">
+            <span className="block">Tata Matching</span>
+            <span className="block bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent animate-shimmer">
+              Center
+            </span>
+          </h1>
+          
+          <p className="font-elegant text-lg sm:text-2xl lg:text-3xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed font-light">
+            Where tradition meets elegance • Premium fabric boutique experience
+          </p>
+        </div>
         
-        <p className="text-base sm:text-xl md:text-2xl mb-6 sm:mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed">
-          Premium Fabric Collection - Discover exquisite fabrics with exclusive social media content
-        </p>
-        
-        {/* Contact Information */}
-        <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 border border-white/20">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base">
-            <div className="space-y-2">
-              <div className="flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-accent font-semibold">📱 WhatsApp:</span>
-                <a href="https://wa.me/917778036741" className="hover:text-accent transition-colors">
-                  +91 77780 36741
-                </a>
+        {/* Contact Information - Boutique Style */}
+        <div className="bg-black/20 backdrop-blur-lg rounded-3xl p-6 sm:p-8 mb-8 sm:mb-10 border border-white/10 shadow-boutique">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center justify-center lg:justify-start gap-3 group">
+                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                  <span className="text-2xl">📱</span>
+                </div>
+                <div className="text-left">
+                  <span className="text-accent font-serif font-medium text-sm block">WhatsApp</span>
+                  <a href="https://wa.me/917778036741" className="text-white hover:text-accent transition-colors font-medium text-lg">
+                    +91 77780 36741
+                  </a>
+                </div>
               </div>
-              <div className="flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-accent font-semibold">📞 Mobile:</span>
-                <a href="tel:+917490836570" className="hover:text-accent transition-colors">
-                  +91 74908 36570
-                </a>
+              <div className="flex items-center justify-center lg:justify-start gap-3 group">
+                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                  <span className="text-2xl">📞</span>
+                </div>
+                <div className="text-left">
+                  <span className="text-accent font-serif font-medium text-sm block">Mobile</span>
+                  <a href="tel:+917490836570" className="text-white hover:text-accent transition-colors font-medium text-lg">
+                    +91 74908 36570
+                  </a>
+                </div>
               </div>
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-accent font-semibold">📍 Address:</span>
-                <span>Bilimora 396321</span>
+            <div className="space-y-4">
+              <div className="flex items-center justify-center lg:justify-start gap-3 group">
+                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                  <span className="text-2xl">📍</span>
+                </div>
+                <div className="text-left">
+                  <span className="text-accent font-serif font-medium text-sm block">Location</span>
+                  <span className="text-white font-medium text-lg">Bilimora 396321</span>
+                </div>
               </div>
-              <div className="flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-accent font-semibold">🏪 Shop:</span>
-                <span>Tata Matching Center</span>
+              <div className="flex items-center justify-center lg:justify-start gap-3 group">
+                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                  <span className="text-2xl">🏪</span>
+                </div>
+                <div className="text-left">
+                  <span className="text-accent font-serif font-medium text-sm block">Boutique</span>
+                  <span className="text-white font-medium text-lg">Premium Fabric Collection</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
           <Button 
             onClick={onUploadClick}
-            className="btn-hero group w-full sm:w-auto"
+            className="btn-hero group w-full sm:w-auto text-lg"
             size="lg"
           >
-            <Upload className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-            <span className="hidden sm:inline">Upload Fabric Collection</span>
-            <span className="sm:hidden">Upload Fabrics</span>
+            <Upload className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
+            <span className="hidden sm:inline font-serif">Add Your Collection</span>
+            <span className="sm:hidden font-serif">Add Fabrics</span>
           </Button>
           
           <Button 
             variant="outline" 
             size="lg"
-            className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-sm w-full sm:w-auto"
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-sm w-full sm:w-auto text-lg font-serif rounded-2xl px-8 py-5 transition-all duration-500"
           >
             Browse Gallery
           </Button>
         </div>
       </div>
 
-      {/* Floating Elements - Hidden on mobile */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-accent/20 rounded-full blur-xl animate-pulse hidden sm:block" />
-      <div className="absolute bottom-32 right-16 w-32 h-32 bg-primary-glow/20 rounded-full blur-2xl animate-pulse hidden sm:block" />
+      {/* Floating Elements - Enhanced boutique style */}
+      <div className="absolute top-16 left-8 w-24 h-24 bg-accent/10 rounded-full blur-2xl animate-pulse hidden lg:block" />
+      <div className="absolute bottom-24 right-12 w-40 h-40 bg-primary-glow/10 rounded-full blur-3xl animate-pulse hidden lg:block" />
+      <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-white/5 rounded-full blur-xl animate-pulse hidden xl:block" />
       
-      {/* Shop Background Image - Decorative Element */}
-      <div className="absolute top-1/2 right-4 sm:right-8 transform -translate-y-1/2 opacity-10 sm:opacity-20 pointer-events-none">
-        <img 
-          src={shopBackground} 
-          alt="Fabric Design" 
-          className="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 object-contain filter saturate-150 animate-pulse"
-        />
+      {/* Shop Background Image - Enhanced decorative element */}
+      <div className="absolute top-1/2 right-4 sm:right-8 lg:right-16 transform -translate-y-1/2 opacity-15 sm:opacity-25 pointer-events-none">
+        <div className="relative">
+          <img 
+            src={shopBackground} 
+            alt="Fabric Design" 
+            className="w-40 h-40 sm:w-56 sm:h-56 lg:w-80 lg:h-80 object-contain filter saturate-150 animate-pulse"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/20 rounded-full blur-xl"></div>
+        </div>
       </div>
     </section>
   );
