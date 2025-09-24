@@ -5,6 +5,9 @@ import { Instagram, Youtube, ExternalLink } from "lucide-react";
 interface FabricItem {
   id: string;
   name: string;
+  description: string;
+  price: number;
+  discount: number;
   image: string;
   instagramUrl: string;
   pinterestUrl: string;
@@ -19,21 +22,21 @@ interface FabricGalleryProps {
 export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
   if (items.length === 0) {
     return (
-      <section className="py-20 px-6">
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Your Fabric Collection</h2>
-          <p className="text-muted-foreground text-lg mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Your Fabric Collection</h2>
+          <p className="text-muted-foreground text-base sm:text-lg mb-8 sm:mb-12">
             No fabric items uploaded yet. Start building your collection!
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Placeholder cards */}
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="card-gradient p-6 hover-lift opacity-50">
+              <Card key={i} className="card-gradient p-4 sm:p-6 hover-lift opacity-50">
                 <div className="aspect-square bg-muted rounded-lg mb-4 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-muted-foreground/20 rounded-full" />
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted-foreground/20 rounded-full" />
                 </div>
-                <div className="h-4 bg-muted rounded mb-2" />
-                <div className="h-3 bg-muted rounded w-2/3" />
+                <div className="h-3 sm:h-4 bg-muted rounded mb-2" />
+                <div className="h-2 sm:h-3 bg-muted rounded w-2/3" />
               </Card>
             ))}
           </div>
@@ -43,16 +46,16 @@ export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
   }
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-12 sm:py-20 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Premium Fabric Collection</h2>
-          <p className="text-muted-foreground text-lg">
-            Click on any fabric to explore social media content
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-4xl font-bold mb-4">Premium Fabric Collection</h2>
+          <p className="text-muted-foreground text-base sm:text-lg">
+            Tap on any fabric to explore social media content
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {items.map((item) => (
             <Card
               key={item.id}
@@ -67,12 +70,34 @@ export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
                 />
               </div>
               
-              <div className="p-4">
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+              <div className="p-3 sm:p-4">
+                <h3 className="font-semibold text-base sm:text-lg mb-2 group-hover:text-primary transition-colors line-clamp-1">
                   {item.name}
                 </h3>
                 
-                <div className="flex flex-wrap gap-2">
+                <p className="text-xs sm:text-sm text-muted-foreground mb-3 line-clamp-2">
+                  {item.description}
+                </p>
+                
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg sm:text-xl font-bold text-primary">
+                      ${item.discount > 0 ? (item.price * (1 - item.discount / 100)).toFixed(2) : item.price.toFixed(2)}
+                    </span>
+                    {item.discount > 0 && (
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-muted-foreground line-through">
+                          ${item.price.toFixed(2)}
+                        </span>
+                        <span className="text-xs bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded">
+                          -{item.discount}%
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-1 sm:gap-2 mb-3">
                   {item.instagramUrl && (
                     <Badge variant="secondary" className="text-xs">
                       <Instagram className="h-3 w-3 mr-1" />
@@ -93,9 +118,9 @@ export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
                   )}
                 </div>
                 
-                <div className="mt-3 flex items-center text-sm text-muted-foreground">
-                  <ExternalLink className="h-4 w-4 mr-1" />
-                  Click to explore
+                <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                  <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  Tap to explore
                 </div>
               </div>
             </Card>

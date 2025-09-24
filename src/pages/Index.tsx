@@ -7,6 +7,9 @@ import { SocialMediaModal } from "@/components/SocialMediaModal";
 interface FabricItem {
   id: string;
   name: string;
+  description: string;
+  price: number;
+  discount: number;
   image: string;
   instagramUrl: string;
   pinterestUrl: string;

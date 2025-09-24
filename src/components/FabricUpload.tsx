@@ -9,6 +9,9 @@ import { toast } from "sonner";
 interface FabricItem {
   id: string;
   name: string;
+  description: string;
+  price: number;
+  discount: number;
   image: string;
   instagramUrl: string;
   pinterestUrl: string;
@@ -23,6 +26,9 @@ interface FabricUploadProps {
 export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
   const [formData, setFormData] = useState({
     name: "",
+    description: "",
+    price: "",
+    discount: "",
     image: "",
     instagramUrl: "",
     pinterestUrl: "",
@@ -43,14 +49,21 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.image) {
-      toast.error("Please fill in the fabric name and upload an image");
+    if (!formData.name || !formData.image || !formData.description || !formData.price) {
+      toast.error("Please fill in all required fields (name, description, price, and image)");
       return;
     }
 
     const newItem: FabricItem = {
       id: Date.now().toString(),
-      ...formData,
+      name: formData.name,
+      description: formData.description,
+      price: parseFloat(formData.price),
+      discount: parseFloat(formData.discount) || 0,
+      image: formData.image,
+      instagramUrl: formData.instagramUrl,
+      pinterestUrl: formData.pinterestUrl,
+      youtubeUrl: formData.youtubeUrl,
     };
 
     onSubmit(newItem);
@@ -74,17 +87,70 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
         </CardHeader>
         
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="name" className="text-sm font-medium">
+                  Fabric Name *
+                </Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Enter fabric name"
+                  className="mt-1"
+                  required
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="price" className="text-sm font-medium">
+                  Price ($) *
+                </Label>
+                <Input
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={formData.price}
+                  onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                  placeholder="0.00"
+                  className="mt-1"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="discount" className="text-sm font-medium">
+                  Discount (%)
+                </Label>
+                <Input
+                  id="discount"
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="100"
+                  value={formData.discount}
+                  onChange={(e) => setFormData(prev => ({ ...prev, discount: e.target.value }))}
+                  placeholder="0"
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
             <div>
-              <Label htmlFor="name" className="text-sm font-medium">
-                Fabric Name *
+              <Label htmlFor="description" className="text-sm font-medium">
+                Description *
               </Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Enter fabric name"
-                className="mt-1"
+              <textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Describe the fabric material, texture, and use cases..."
+                className="mt-1 w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[80px]"
+                rows={3}
                 required
               />
             </div>
