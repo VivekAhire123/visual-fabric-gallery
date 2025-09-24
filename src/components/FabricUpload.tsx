@@ -79,184 +79,244 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-lg card-gradient">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl font-bold">Upload Fabric Item</CardTitle>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
+      <Card className="w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] card-gradient flex flex-col">
+        <CardHeader className="flex flex-row items-center justify-between border-b border-border/20 flex-shrink-0 p-4 sm:p-6">
+          <div>
+            <CardTitle className="font-serif text-xl sm:text-2xl font-bold gradient-text">Upload Fabric</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">Add your premium fabric to the collection</p>
+          </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="hover:bg-muted/50"
+            className="hover:bg-muted/50 rounded-full"
+            disabled={loading}
           >
             <X className="h-5 w-5" />
           </Button>
         </CardHeader>
         
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name" className="text-sm font-medium">
-                  Fabric Name *
-                </Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Enter fabric name"
-                  className="mt-1"
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="price" className="text-sm font-medium">
-                  Price ($) *
-                </Label>
-                <Input
-                  id="price"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={formData.price}
-                  onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
-                  placeholder="0.00"
-                  className="mt-1"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="discount" className="text-sm font-medium">
-                  Discount (%)
-                </Label>
-                <Input
-                  id="discount"
-                  type="number"
-                  step="1"
-                  min="0"
-                  max="100"
-                  value={formData.discount}
-                  onChange={(e) => setFormData(prev => ({ ...prev, discount: e.target.value }))}
-                  placeholder="0"
-                  className="mt-1"
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="description" className="text-sm font-medium">
-                Description *
-              </Label>
-              <textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Describe the fabric material, texture, and use cases..."
-                className="mt-1 w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[80px]"
-                rows={3}
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="image" className="text-sm font-medium">
-                Fabric Image *
-              </Label>
-              <div className="mt-1">
-                <Input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-                <Label
-                  htmlFor="image"
-                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                >
-                  {imagePreview ? (
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="text-center">
-                      <Upload className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">Click to upload image</p>
-                    </div>
-                  )}
-                </Label>
-              </div>
-            </div>
-
+        <CardContent className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Basic Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Social Media Links</h3>
+              <h3 className="font-serif text-lg font-semibold text-primary border-b border-border/30 pb-2">
+                Basic Information
+              </h3>
               
-              <div>
-                <Label htmlFor="instagram" className="text-sm font-medium flex items-center gap-2">
-                  <Instagram className="h-4 w-4" />
-                  Instagram Reel URL
-                </Label>
-                <Input
-                  id="instagram"
-                  value={formData.instagramUrl}
-                  onChange={(e) => setFormData(prev => ({ ...prev, instagramUrl: e.target.value }))}
-                  placeholder="https://instagram.com/reel/..."
-                  className="mt-1"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-sm font-medium text-foreground">
+                    Fabric Name *
+                  </Label>
+                  <Input
+                    id="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., Silk Saree Fabric"
+                    className="input-boutique"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="price" className="text-sm font-medium text-foreground">
+                    Price (₹) *
+                  </Label>
+                  <Input
+                    id="price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.price}
+                    onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                    placeholder="0.00"
+                    className="input-boutique"
+                    required
+                    disabled={loading}
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="pinterest" className="text-sm font-medium flex items-center gap-2">
-                  <div className="h-4 w-4 bg-red-500 rounded-sm" />
-                  Pinterest URL
-                </Label>
-                <Input
-                  id="pinterest"
-                  value={formData.pinterestUrl}
-                  onChange={(e) => setFormData(prev => ({ ...prev, pinterestUrl: e.target.value }))}
-                  placeholder="https://pinterest.com/pin/..."
-                  className="mt-1"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="discount" className="text-sm font-medium text-foreground">
+                    Discount (%)
+                  </Label>
+                  <Input
+                    id="discount"
+                    type="number"
+                    step="1"
+                    min="0"
+                    max="100"
+                    value={formData.discount}
+                    onChange={(e) => setFormData(prev => ({ ...prev, discount: e.target.value }))}
+                    placeholder="0"
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="youtube" className="text-sm font-medium flex items-center gap-2">
-                  <Youtube className="h-4 w-4" />
-                  YouTube Video URL
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-sm font-medium text-foreground">
+                  Description *
                 </Label>
-                <Input
-                  id="youtube"
-                  value={formData.youtubeUrl}
-                  onChange={(e) => setFormData(prev => ({ ...prev, youtubeUrl: e.target.value }))}
-                  placeholder="https://youtube.com/watch?v=..."
-                  className="mt-1"
+                <textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Describe the fabric material, texture, patterns, and best use cases..."
+                  className="input-boutique min-h-[100px] resize-none"
+                  rows={4}
+                  required
+                  disabled={loading}
                 />
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4">
-              <Button type="button" variant="outline" onClick={onClose} className="flex-1" disabled={loading}>
-                Cancel
-              </Button>
-              <Button type="submit" className="flex-1 bg-primary hover:bg-primary/90" disabled={loading}>
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Uploading...
-                  </>
-                ) : (
-                  'Upload Fabric'
-                )}
-              </Button>
+            {/* Image Upload */}
+            <div className="space-y-4">
+              <h3 className="font-serif text-lg font-semibold text-primary border-b border-border/30 pb-2">
+                Fabric Image
+              </h3>
+              
+              <div className="space-y-2">
+                <Label htmlFor="image" className="text-sm font-medium text-foreground">
+                  Upload Fabric Photo *
+                </Label>
+                <div>
+                  <Input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    disabled={loading}
+                  />
+                  <Label
+                    htmlFor="image"
+                    className={`flex items-center justify-center w-full h-40 sm:h-48 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${
+                      imagePreview 
+                        ? 'border-accent bg-accent/5' 
+                        : 'border-border hover:border-accent hover:bg-accent/5'
+                    } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                  >
+                    {imagePreview ? (
+                      <div className="relative w-full h-full group">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                          <p className="text-white text-sm font-medium">Click to change</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                        <p className="text-sm font-medium text-foreground mb-1">Click to upload fabric image</p>
+                        <p className="text-xs text-muted-foreground">PNG, JPG, WEBP up to 20MB</p>
+                      </div>
+                    )}
+                  </Label>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="space-y-4">
+              <h3 className="font-serif text-lg font-semibold text-primary border-b border-border/30 pb-2">
+                Social Media Showcase
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Add links to showcase your fabric on social platforms (optional)
+              </p>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="instagram" className="text-sm font-medium flex items-center gap-2">
+                    <Instagram className="h-4 w-4 text-purple-600" />
+                    Instagram Reel URL
+                  </Label>
+                  <Input
+                    id="instagram"
+                    value={formData.instagramUrl}
+                    onChange={(e) => setFormData(prev => ({ ...prev, instagramUrl: e.target.value }))}
+                    placeholder="https://instagram.com/reel/..."
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="pinterest" className="text-sm font-medium flex items-center gap-2">
+                    <div className="h-4 w-4 bg-red-500 rounded-sm" />
+                    Pinterest URL
+                  </Label>
+                  <Input
+                    id="pinterest"
+                    value={formData.pinterestUrl}
+                    onChange={(e) => setFormData(prev => ({ ...prev, pinterestUrl: e.target.value }))}
+                    placeholder="https://pinterest.com/pin/..."
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="youtube" className="text-sm font-medium flex items-center gap-2">
+                    <Youtube className="h-4 w-4 text-red-600" />
+                    YouTube Video URL
+                  </Label>
+                  <Input
+                    id="youtube"
+                    value={formData.youtubeUrl}
+                    onChange={(e) => setFormData(prev => ({ ...prev, youtubeUrl: e.target.value }))}
+                    placeholder="https://youtube.com/watch?v=..."
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+              </div>
             </div>
           </form>
         </CardContent>
+
+        {/* Fixed Footer with Buttons */}
+        <div className="border-t border-border/20 p-4 sm:p-6 flex-shrink-0 bg-card">
+          <div className="flex gap-3">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={onClose} 
+              className="flex-1 rounded-xl" 
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleSubmit}
+              className="flex-1 btn-hero" 
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Add to Collection
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
       </Card>
     </div>
   );
