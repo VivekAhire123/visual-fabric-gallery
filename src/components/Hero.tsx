@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import heroImage from "@/assets/hero-fabric-shop.jpg";

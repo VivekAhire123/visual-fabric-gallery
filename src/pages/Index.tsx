@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Hero } from "@/components/Hero";
 import { FabricUpload } from "@/components/FabricUpload";
 import { FabricGallery } from "@/components/FabricGallery";
