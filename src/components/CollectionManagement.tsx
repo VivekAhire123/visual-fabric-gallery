@@ -126,35 +126,35 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
-      <Card className="w-full max-w-6xl max-h-[95vh] card-gradient flex flex-col">
+      <Card className="w-full max-w-6xl h-[95vh] sm:max-h-[95vh] card-gradient flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between border-b border-border/20 flex-shrink-0 p-4 sm:p-6">
           <div>
-            <CardTitle className="font-serif text-xl sm:text-2xl font-bold gradient-text flex items-center gap-2">
-              <Package className="h-6 w-6" />
+            <CardTitle className="font-serif text-lg sm:text-xl lg:text-2xl font-bold gradient-text flex items-center gap-2">
+              <Package className="h-5 w-5 sm:h-6 sm:w-6" />
               Manage Collections
             </CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">Edit and manage your fabric collection</p>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">Edit and manage your fabric collection</p>
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="hover:bg-muted/50 rounded-full"
+            className="hover:bg-muted/50 rounded-full h-8 w-8 sm:h-10 sm:w-10"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
         </CardHeader>
 
-        <CardContent className="flex-1 overflow-hidden flex flex-col p-4 sm:p-6">
+        <CardContent className="flex-1 overflow-hidden flex flex-col p-3 sm:p-4 lg:p-6">
           {/* Search */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-4 mb-4 sm:mb-6">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search by name or category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 text-sm sm:text-base"
               />
             </div>
           </div>
@@ -163,12 +163,12 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             {filteredItems.length === 0 ? (
               <div className="text-center py-8">
-                <Package className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium text-muted-foreground">No items found</p>
+                <Package className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mb-4" />
+                <p className="text-base sm:text-lg font-medium text-muted-foreground">No items found</p>
                 <p className="text-sm text-muted-foreground">Try adjusting your search or add new items</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {filteredItems.map((item) => (
                   <Card key={item.id} className="card-gradient overflow-hidden">
                     <div className="aspect-square relative">
@@ -183,22 +183,22 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
                         </div>
                       )}
                     </div>
-                    <div className="p-4">
+                    <div className="p-3 sm:p-4">
                       <h3 className="font-semibold text-sm line-clamp-1">{item.name}</h3>
                       <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{item.description}</p>
                       <div className="flex justify-between items-center mt-3">
                         <div>
-                          <span className="font-bold text-primary">₹{item.price}</span>
+                          <span className="font-bold text-primary text-sm">₹{item.price}</span>
                           {item.discount > 0 && (
                             <span className="text-xs text-green-600 ml-1">({item.discount}% off)</span>
                           )}
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex gap-1 sm:gap-2">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => handleEdit(item)}
-                            className="h-8 w-8 p-0"
+                            className="h-7 w-7 sm:h-8 sm:w-8 p-0"
                           >
                             <Edit className="h-3 w-3" />
                           </Button>
@@ -206,7 +206,7 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
                             size="sm"
                             variant="outline"
                             onClick={() => handleDelete(item.id, item.name)}
-                            className="h-8 w-8 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                            className="h-7 w-7 sm:h-8 sm:w-8 p-0 hover:bg-destructive hover:text-destructive-foreground"
                           >
                             <Trash2 className="h-3 w-3" />
                           </Button>
@@ -226,38 +226,39 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
         {/* Edit Modal */}
         {editingItem && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-60 flex items-center justify-center p-2">
-            <Card className="w-full max-w-2xl max-h-[90vh] card-gradient flex flex-col">
-              <CardHeader className="flex flex-row items-center justify-between border-b border-border/20 flex-shrink-0">
-                <CardTitle className="font-serif text-lg font-bold gradient-text">Edit Fabric</CardTitle>
+            <Card className="w-full max-w-2xl h-[90vh] sm:max-h-[90vh] card-gradient flex flex-col">
+              <CardHeader className="flex flex-row items-center justify-between border-b border-border/20 flex-shrink-0 p-4 sm:p-6">
+                <CardTitle className="font-serif text-base sm:text-lg font-bold gradient-text">Edit Fabric</CardTitle>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setEditingItem(null)}
-                  className="hover:bg-muted/50 rounded-full"
+                  className="hover:bg-muted/50 rounded-full h-8 w-8 sm:h-10 sm:w-10"
                 >
                   <X className="h-4 w-4" />
                 </Button>
               </CardHeader>
               
-              <CardContent className="flex-1 overflow-y-auto custom-scrollbar p-6">
+              <CardContent className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6">
                 <form onSubmit={handleUpdate} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="edit-name">Fabric Name</Label>
+                      <Label htmlFor="edit-name" className="text-sm font-medium">Fabric Name</Label>
                       <Input
                         id="edit-name"
                         value={editingItem.name}
                         onChange={(e) => setEditingItem({...editingItem, name: e.target.value})}
+                        className="text-sm sm:text-base"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="edit-category">Category</Label>
+                      <Label htmlFor="edit-category" className="text-sm font-medium">Category</Label>
                       <select
                         id="edit-category"
                         value={editingItem.category}
                         onChange={(e) => setEditingItem({...editingItem, category: e.target.value})}
-                        className="input-boutique w-full"
+                        className="input-boutique w-full text-sm sm:text-base"
                         required
                       >
                         {categories.map((cat) => (
@@ -269,67 +270,72 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="edit-price">Price (₹)</Label>
+                      <Label htmlFor="edit-price" className="text-sm font-medium">Price (₹)</Label>
                       <Input
                         id="edit-price"
                         type="number"
                         step="0.01"
                         value={editingItem.price}
                         onChange={(e) => setEditingItem({...editingItem, price: parseFloat(e.target.value)})}
+                        className="text-sm sm:text-base"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="edit-discount">Discount (%)</Label>
+                      <Label htmlFor="edit-discount" className="text-sm font-medium">Discount (%)</Label>
                       <Input
                         id="edit-discount"
                         type="number"
                         value={editingItem.discount}
                         onChange={(e) => setEditingItem({...editingItem, discount: parseInt(e.target.value)})}
+                        className="text-sm sm:text-base"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="edit-material">Material</Label>
+                      <Label htmlFor="edit-material" className="text-sm font-medium">Material</Label>
                       <Input
                         id="edit-material"
                         value={editingItem.material || ""}
                         onChange={(e) => setEditingItem({...editingItem, material: e.target.value})}
+                        className="text-sm sm:text-base"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="edit-color">Color</Label>
+                      <Label htmlFor="edit-color" className="text-sm font-medium">Color</Label>
                       <Input
                         id="edit-color"
                         value={editingItem.color || ""}
                         onChange={(e) => setEditingItem({...editingItem, color: e.target.value})}
+                        className="text-sm sm:text-base"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="edit-description">Description</Label>
+                    <Label htmlFor="edit-description" className="text-sm font-medium">Description</Label>
                     <textarea
                       id="edit-description"
                       value={editingItem.description}
                       onChange={(e) => setEditingItem({...editingItem, description: e.target.value})}
-                      className="input-boutique min-h-[80px] resize-none"
+                      className="input-boutique min-h-[80px] resize-none text-sm sm:text-base"
                       rows={3}
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="edit-image">Update Image</Label>
-                    <div className="flex items-center gap-4">
+                    <Label htmlFor="edit-image" className="text-sm font-medium">Update Image</Label>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                       <img src={imagePreview} alt="Preview" className="w-16 h-16 object-cover rounded" />
                       <Input
                         id="edit-image"
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
+                        className="text-sm"
                       />
                     </div>
                   </div>
@@ -340,29 +346,32 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
                       id="edit-featured"
                       checked={editingItem.featured}
                       onChange={(e) => setEditingItem({...editingItem, featured: e.target.checked})}
+                      className="rounded border-border"
                     />
-                    <Label htmlFor="edit-featured">Mark as Featured</Label>
-                  </div>
-
-                  <div className="flex gap-3 pt-4">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setEditingItem(null)}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      type="submit"
-                      className="flex-1 btn-hero" 
-                      disabled={isUpdating}
-                    >
-                      {isUpdating ? 'Updating...' : 'Update'}
-                    </Button>
+                    <Label htmlFor="edit-featured" className="text-sm font-medium">Mark as Featured</Label>
                   </div>
                 </form>
               </CardContent>
+
+              <div className="border-t border-border/20 p-4 sm:p-6 flex-shrink-0">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setEditingItem(null)}
+                    className="flex-1 order-2 sm:order-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    onClick={handleUpdate}
+                    className="flex-1 btn-hero order-1 sm:order-2" 
+                    disabled={isUpdating}
+                  >
+                    {isUpdating ? 'Updating...' : 'Update'}
+                  </Button>
+                </div>
+              </div>
             </Card>
           </div>
         )}

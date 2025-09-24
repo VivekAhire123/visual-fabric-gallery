@@ -165,22 +165,23 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-background rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-serif font-bold gradient-text">Festival Banner Management</h2>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
+      <div className="bg-background rounded-lg shadow-xl w-full max-w-6xl h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b flex-shrink-0">
+          <h2 className="text-lg sm:text-2xl font-serif font-bold gradient-text">Festival Banner Management</h2>
           <Button variant="ghost" onClick={onClose} className="h-8 w-8 p-0">
             <X className="h-4 w-4" />
           </Button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto flex-1">
           {/* Add New Banner Button */}
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Manage Festival Banners</h3>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h3 className="text-base sm:text-lg font-semibold">Manage Festival Banners</h3>
             <Button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="btn-hero"
+              className="btn-hero w-full sm:w-auto"
+              size="sm"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add New Banner
@@ -353,12 +354,12 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {festivalBanners.map((banner) => (
                   <Card key={banner.id} className="card-gradient">
-                    <CardContent className="p-4">
-                      <div className="flex gap-4">
-                        <div className="w-32 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                    <CardContent className="p-3 sm:p-4">
+                      <div className="flex flex-col gap-3 sm:gap-4">
+                        <div className="w-full h-32 sm:h-20 rounded-lg overflow-hidden flex-shrink-0">
                           <img
                             src={banner.image_url}
                             alt={banner.title}
@@ -367,43 +368,50 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
                         </div>
                         
                         <div className="flex-1 space-y-2">
-                          <div className="flex items-start justify-between">
-                            <h4 className="font-semibold text-lg">{banner.title}</h4>
-                            <div className="flex gap-2">
-                              <Badge variant="outline">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-semibold text-sm sm:text-lg line-clamp-2">{banner.title}</h4>
+                            <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 flex-shrink-0">
+                              <Badge variant="outline" className="text-xs">
                                 Order: {banner.sort_order || 0}
                               </Badge>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleEdit(banner)}
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                onClick={() => handleDelete(banner.id, banner.title)}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
                             </div>
                           </div>
                           
                           {banner.description && (
-                            <p className="text-muted-foreground text-sm">{banner.description}</p>
+                            <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2">{banner.description}</p>
                           )}
                           
                           {(banner.start_date || banner.end_date) && (
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Calendar className="h-4 w-4" />
-                              <span>
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                              <span className="line-clamp-2">
                                 {banner.start_date && `From ${new Date(banner.start_date).toLocaleDateString()}`}
                                 {banner.start_date && banner.end_date && ' - '}
                                 {banner.end_date && `Until ${new Date(banner.end_date).toLocaleDateString()}`}
                               </span>
                             </div>
                           )}
+
+                          <div className="flex gap-2 pt-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(banner)}
+                              className="flex-1 text-xs sm:text-sm"
+                            >
+                              <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                              Edit
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(banner.id, banner.title)}
+                              className="flex-1 text-xs sm:text-sm"
+                            >
+                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                              Delete
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
