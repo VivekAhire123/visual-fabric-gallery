@@ -22,7 +22,7 @@ interface BannerForm {
 }
 
 export const BannerManagement = ({ onClose }: BannerManagementProps) => {
-  const { festivalBanners, loading, addFestivalBanner, uploadImage } = useFabricItems();
+  const { festivalBanners, loading, addFestivalBanner, updateFestivalBanner, deleteFestivalBanner, uploadImage } = useFabricItems();
   const [isUploading, setIsUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -98,6 +98,10 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
           setIsUploading(false);
           return;
         }
+      } else if (editingId) {
+        // Keep existing image if no new image uploaded during edit
+        const existingBanner = festivalBanners.find(b => b.id === editingId);
+        imageUrl = existingBanner?.image_url || '';
       }
 
       const bannerData = {
@@ -110,33 +114,54 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
         is_active: true
       };
 
-      const result = await addFestivalBanner(bannerData);
+      let result;
+      if (editingId) {
+        result = await updateFestivalBanner(editingId, bannerData);
+      } else {
+        result = await addFestivalBanner(bannerData);
+      }
       
       if (result) {
-        toast.success('Banner added successfully!');
+        toast.success(editingId ? 'Banner updated successfully!' : 'Banner added successfully!');
         resetForm();
       } else {
-        toast.error('Failed to add banner');
+        toast.error(editingId ? 'Failed to update banner' : 'Failed to add banner');
       }
     } catch (error) {
-      console.error('Error adding banner:', error);
-      toast.error('An error occurred while adding the banner');
+      console.error('Error saving banner:', error);
+      toast.error('An error occurred while saving the banner');
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this banner?')) {
+  const handleDelete = async (id: string, title: string) => {
+    if (!window.confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
       return;
     }
 
     try {
-      // Note: You'll need to implement deleteFestivalBanner in useFabricItems hook
-      toast.success('Banner deleted successfully!');
+      const result = await deleteFestivalBanner(id);
+      if (result) {
+        toast.success('Banner deleted successfully!');
+      }
     } catch (error) {
+      console.error('Error deleting banner:', error);
       toast.error('Failed to delete banner');
     }
+  };
+
+  const handleEdit = (banner: any) => {
+    setEditingId(banner.id);
+    setFormData({
+      title: banner.title,
+      description: banner.description || '',
+      startDate: banner.start_date || '',
+      endDate: banner.end_date || '',
+      sortOrder: banner.sort_order?.toString() || '0'
+    });
+    setImagePreview(banner.image_url);
+    setShowAddForm(true);
   };
 
   return (
@@ -167,8 +192,8 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
             <Card className="card-gradient">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Plus className="h-5 w-5" />
-                  Add Festival Banner
+                  {editingId ? <Edit className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+                  {editingId ? 'Edit Festival Banner' : 'Add Festival Banner'}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -289,12 +314,12 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
                       {isUploading ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                          Uploading...
+                          {editingId ? 'Updating...' : 'Uploading...'}
                         </>
                       ) : (
                         <>
                           <Save className="h-4 w-4 mr-2" />
-                          Add Banner
+                          {editingId ? 'Update Banner' : 'Add Banner'}
                         </>
                       )}
                     </Button>
@@ -351,14 +376,14 @@ export const BannerManagement = ({ onClose }: BannerManagementProps) => {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => setEditingId(banner.id)}
+                                onClick={() => handleEdit(banner)}
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => handleDelete(banner.id)}
+                                onClick={() => handleDelete(banner.id, banner.title)}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
