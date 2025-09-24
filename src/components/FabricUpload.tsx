@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X, Upload, Instagram, Youtube, Loader2 } from "lucide-react";
 import { useFabricItems } from "@/hooks/useFabricItems";
+import { toast } from "sonner";
 
 interface FabricUploadProps {
   onClose: () => void;
@@ -47,45 +48,78 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !imageFile || !formData.description || !formData.price) {
+    // Enhanced validation with user feedback
+    if (!formData.name.trim()) {
+      toast.error('Please enter a fabric name');
+      return;
+    }
+    
+    if (!formData.description.trim()) {
+      toast.error('Please enter a fabric description');
+      return;
+    }
+    
+    if (!formData.price || parseFloat(formData.price) <= 0) {
+      toast.error('Please enter a valid price');
+      return;
+    }
+    
+    if (!formData.category) {
+      toast.error('Please select a category');
+      return;
+    }
+    
+    if (!imageFile) {
+      toast.error('Please upload a fabric image');
       return;
     }
 
     setLoading(true);
     
     try {
+      console.log('Starting fabric upload process...');
+      
       // Upload image first
       const imageUrl = await uploadImage(imageFile);
       if (!imageUrl) {
+        console.error('Image upload failed');
+        toast.error('Failed to upload image. Please try again.');
         setLoading(false);
         return;
       }
+      
+      console.log('Image uploaded successfully:', imageUrl);
 
       // Add fabric item to database
       const newItem = await addFabricItem({
-        name: formData.name,
-        description: formData.description,
+        name: formData.name.trim(),
+        description: formData.description.trim(),
         price: parseFloat(formData.price),
         discount: parseFloat(formData.discount) || 0,
         category: formData.category,
         featured: formData.featured,
         stock_quantity: parseInt(formData.stock) || 100,
         fabric_type: null,
-        color: formData.color || null,
-        pattern: formData.pattern || null,
-        material: formData.material || null,
+        color: formData.color?.trim() || null,
+        pattern: formData.pattern?.trim() || null,
+        material: formData.material?.trim() || null,
         image_url: imageUrl,
-        instagram_url: formData.instagramUrl || null,
-        pinterest_url: formData.pinterestUrl || null,
-        youtube_url: formData.youtubeUrl || null,
+        instagram_url: formData.instagramUrl?.trim() || null,
+        pinterest_url: formData.pinterestUrl?.trim() || null,
+        youtube_url: formData.youtubeUrl?.trim() || null,
       });
 
       if (newItem) {
+        console.log('Fabric item added successfully:', newItem);
+        toast.success('Fabric added to collection successfully!');
         onSubmit();
         onClose();
+      } else {
+        toast.error('Failed to add fabric item. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting fabric item:', error);
+      toast.error('An error occurred while adding the fabric. Please try again.');
     } finally {
       setLoading(false);
     }
