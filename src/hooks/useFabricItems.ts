@@ -283,6 +283,98 @@ export const useFabricItems = () => {
     }
   };
 
+  const updateFabricItem = async (id: string, updates: Partial<FabricItem>) => {
+    try {
+      const { data, error } = await supabase
+        .from('fabric_items')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error updating fabric item:', error);
+        toast.error('Failed to update fabric item');
+        return null;
+      }
+
+      toast.success('Fabric item updated successfully!');
+      return data;
+    } catch (error) {
+      console.error('Error updating fabric item:', error);
+      toast.error('Failed to update fabric item');
+      return null;
+    }
+  };
+
+  const deleteFabricItem = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('fabric_items')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Error deleting fabric item:', error);
+        toast.error('Failed to delete fabric item');
+        return false;
+      }
+
+      toast.success('Fabric item deleted successfully!');
+      return true;
+    } catch (error) {
+      console.error('Error deleting fabric item:', error);
+      toast.error('Failed to delete fabric item');
+      return false;
+    }
+  };
+
+  const updateFestivalBanner = async (id: string, updates: Partial<FestivalBanner>) => {
+    try {
+      const { data, error } = await supabase
+        .from('festival_banners')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error updating festival banner:', error);
+        toast.error('Failed to update festival banner');
+        return null;
+      }
+
+      toast.success('Festival banner updated successfully!');
+      return data;
+    } catch (error) {
+      console.error('Error updating festival banner:', error);
+      toast.error('Failed to update festival banner');
+      return null;
+    }
+  };
+
+  const deleteFestivalBanner = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('festival_banners')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Error deleting festival banner:', error);
+        toast.error('Failed to delete festival banner');
+        return false;
+      }
+
+      toast.success('Festival banner deleted successfully!');
+      return true;
+    } catch (error) {
+      console.error('Error deleting festival banner:', error);
+      toast.error('Failed to delete festival banner');
+      return false;
+    }
+  };
+
   const updateFilters = (newFilters: Partial<FabricFilters>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
@@ -299,6 +391,10 @@ export const useFabricItems = () => {
     filters,
     addFabricItem,
     addFestivalBanner,
+    updateFabricItem,
+    deleteFabricItem,
+    updateFestivalBanner,
+    deleteFestivalBanner,
     uploadImage,
     updateFilters,
     clearFilters,

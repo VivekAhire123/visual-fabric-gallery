@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { FabricUpload } from "@/components/FabricUpload";
 import { BannerManagement } from "@/components/BannerManagement";
+import { CollectionManagement } from "@/components/CollectionManagement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Upload, Settings, LogOut } from "lucide-react";
+import { ArrowLeft, Upload, Settings, LogOut, Package } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -11,6 +12,7 @@ import { toast } from "sonner";
 const Admin = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isBannerManagementOpen, setIsBannerManagementOpen] = useState(false);
+  const [isCollectionManagementOpen, setIsCollectionManagementOpen] = useState(false);
   const { profile, signOut } = useAuth();
 
   const handleUploadSubmit = () => {
@@ -52,6 +54,14 @@ const Admin = () => {
                 </Button>
                 
                 <Button 
+                  onClick={() => setIsCollectionManagementOpen(true)}
+                  variant="outline"
+                >
+                  <Package className="h-4 w-4 mr-2" />
+                  Manage Collections
+                </Button>
+                
+                <Button 
                   onClick={() => setIsBannerManagementOpen(true)}
                   variant="outline"
                 >
@@ -76,7 +86,7 @@ const Admin = () => {
         <div className="grid gap-8">
           <div className="bg-card rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <Button 
                 onClick={() => setIsUploadOpen(true)}
                 className="h-24 text-lg btn-hero"
@@ -84,6 +94,16 @@ const Admin = () => {
               >
                 <Upload className="h-6 w-6 mr-3" />
                 Upload New Fabric Collection
+              </Button>
+              
+              <Button 
+                onClick={() => setIsCollectionManagementOpen(true)}
+                variant="outline"
+                className="h-24 text-lg"
+                size="lg"
+              >
+                <Package className="h-6 w-6 mr-3" />
+                Manage Collections
               </Button>
               
               <Button 
@@ -119,6 +139,12 @@ const Admin = () => {
         {isBannerManagementOpen && (
           <BannerManagement
             onClose={() => setIsBannerManagementOpen(false)}
+          />
+        )}
+
+        {isCollectionManagementOpen && (
+          <CollectionManagement
+            onClose={() => setIsCollectionManagementOpen(false)}
           />
         )}
       </div>
