@@ -81,7 +81,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                         </Badge>
                         <Button
                           size="sm"
-                          onClick={() => window.open(item.instagramUrl, '_blank')}
+                          onClick={() => window.open(item.instagramUrl, '_blank', 'noopener,noreferrer')}
                           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90"
                         >
                           <ExternalLink className="h-4 w-4" />
@@ -109,7 +109,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                         </Badge>
                         <Button
                           size="sm"
-                          onClick={() => window.open(item.pinterestUrl, '_blank')}
+                          onClick={() => window.open(item.pinterestUrl, '_blank', 'noopener,noreferrer')}
                           className="bg-red-600 hover:bg-red-700"
                         >
                           <ExternalLink className="h-4 w-4" />
@@ -131,7 +131,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                         </Badge>
                         <Button
                           size="sm"
-                          onClick={() => window.open(item.youtubeUrl, '_blank')}
+                          onClick={() => window.open(item.youtubeUrl, '_blank', 'noopener,noreferrer')}
                           className="bg-red-600 hover:bg-red-700"
                         >
                           <ExternalLink className="h-4 w-4" />
