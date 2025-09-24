@@ -1,0 +1,107 @@
+import React, { useState } from "react";
+import { FabricUpload } from "@/components/FabricUpload";
+import { AdminPanel } from "@/components/AdminPanel";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Upload, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const Admin = () => {
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
+  const handleUploadSubmit = () => {
+    // Refresh will happen automatically through realtime updates
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-card">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" asChild>
+                <Link to="/">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Shop
+                </Link>
+              </Button>
+              <h1 className="text-3xl font-bold text-primary">Admin Panel</h1>
+            </div>
+            
+            <div className="flex gap-4">
+              <Button 
+                onClick={() => setIsUploadOpen(true)}
+                className="btn-hero"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Upload Fabric
+              </Button>
+              
+              <Button 
+                onClick={() => setIsAdminOpen(true)}
+                variant="outline"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Festival Banners
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        <div className="grid gap-8">
+          <div className="bg-card rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Button 
+                onClick={() => setIsUploadOpen(true)}
+                className="h-24 text-lg btn-hero"
+                size="lg"
+              >
+                <Upload className="h-6 w-6 mr-3" />
+                Upload New Fabric Collection
+              </Button>
+              
+              <Button 
+                onClick={() => setIsAdminOpen(true)}
+                variant="outline"
+                className="h-24 text-lg"
+                size="lg"
+              >
+                <Settings className="h-6 w-6 mr-3" />
+                Manage Festival Banners
+              </Button>
+            </div>
+          </div>
+
+          <div className="bg-card rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Admin Dashboard</h2>
+            <p className="text-muted-foreground">
+              Welcome to your fabric collection management system. Here you can upload new fabrics, 
+              manage categories, and control festival banners displayed on the homepage.
+            </p>
+          </div>
+        </div>
+      </main>
+
+      {/* Modals */}
+      {isUploadOpen && (
+        <FabricUpload
+          onClose={() => setIsUploadOpen(false)}
+          onSubmit={handleUploadSubmit}
+        />
+      )}
+
+      {isAdminOpen && (
+        <AdminPanel
+          onClose={() => setIsAdminOpen(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Admin;

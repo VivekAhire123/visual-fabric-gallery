@@ -1,14 +1,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-fabric-shop.jpg";
 import shopBackground from "@/assets/shop-background.png";
 
-interface HeroProps {
-  onUploadClick: () => void;
-}
-
-export const Hero = ({ onUploadClick }: HeroProps) => {
+export const Hero = () => {
   return (
     <section className="relative min-h-[70vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -89,13 +86,15 @@ export const Hero = ({ onUploadClick }: HeroProps) => {
         
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
           <Button 
-            onClick={onUploadClick}
+            asChild
             className="btn-hero group w-full sm:w-auto text-lg"
             size="lg"
           >
-            <Upload className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
-            <span className="hidden sm:inline font-serif">Add Your Collection</span>
-            <span className="sm:hidden font-serif">Add Fabrics</span>
+            <Link to="/admin">
+              <ShoppingBag className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+              <span className="hidden sm:inline font-serif">Admin Panel</span>
+              <span className="sm:hidden font-serif">Admin</span>
+            </Link>
           </Button>
           
           <Button 
