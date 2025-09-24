@@ -94,45 +94,138 @@ export type Database = {
           },
         ]
       }
+      fabric_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       fabric_items: {
         Row: {
+          category: string | null
+          color: string | null
           created_at: string
           description: string
           discount: number | null
+          fabric_type: string | null
+          featured: boolean | null
           id: string
           image_url: string
           instagram_url: string | null
+          material: string | null
           name: string
+          pattern: string | null
           pinterest_url: string | null
           price: number
+          stock_quantity: number | null
           updated_at: string
           youtube_url: string | null
         }
         Insert: {
+          category?: string | null
+          color?: string | null
           created_at?: string
           description: string
           discount?: number | null
+          fabric_type?: string | null
+          featured?: boolean | null
           id?: string
           image_url: string
           instagram_url?: string | null
+          material?: string | null
           name: string
+          pattern?: string | null
           pinterest_url?: string | null
           price: number
+          stock_quantity?: number | null
           updated_at?: string
           youtube_url?: string | null
         }
         Update: {
+          category?: string | null
+          color?: string | null
           created_at?: string
           description?: string
           discount?: number | null
+          fabric_type?: string | null
+          featured?: boolean | null
           id?: string
           image_url?: string
           instagram_url?: string | null
+          material?: string | null
           name?: string
+          pattern?: string | null
           pinterest_url?: string | null
           price?: number
+          stock_quantity?: number | null
           updated_at?: string
           youtube_url?: string | null
+        }
+        Relationships: []
+      }
+      festival_banners: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          sort_order: number | null
+          start_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          sort_order?: number | null
+          start_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          sort_order?: number | null
+          start_date?: string | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

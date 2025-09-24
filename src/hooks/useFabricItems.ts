@@ -12,24 +12,149 @@ export interface FabricItem {
   instagram_url: string | null;
   pinterest_url: string | null;
   youtube_url: string | null;
+  category: string;
+  featured: boolean;
+  stock_quantity: number;
+  fabric_type: string | null;
+  color: string | null;
+  pattern: string | null;
+  material: string | null;
   created_at: string;
   updated_at: string;
 }
 
+export interface FabricCategory {
+  id: string;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+  is_active: boolean;
+  sort_order: number;
+}
+
+export interface FestivalBanner {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string;
+  is_active: boolean;
+  start_date: string | null;
+  end_date: string | null;
+  sort_order: number;
+}
+
+export interface FabricFilters {
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  color?: string;
+  material?: string;
+  featured?: boolean;
+  searchQuery?: string;
+}
+
 export const useFabricItems = () => {
   const [fabricItems, setFabricItems] = useState<FabricItem[]>([]);
+  const [categories, setCategories] = useState<FabricCategory[]>([]);
+  const [festivalBanners, setFestivalBanners] = useState<FestivalBanner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState<FabricFilters>({});
+
+  useEffect(() => {
+    fetchData();
+    setupRealtimeSubscriptions();
+  }, []);
 
   useEffect(() => {
     fetchFabricItems();
-  }, []);
+  }, [filters]);
+
+  const setupRealtimeSubscriptions = () => {
+    const channel = supabase
+      .channel('fabric-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'fabric_items'
+        },
+        () => fetchFabricItems()
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'fabric_categories'
+        },
+        () => fetchCategories()
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'festival_banners'
+        },
+        () => fetchFestivalBanners()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  };
+
+  const fetchData = async () => {
+    await Promise.all([
+      fetchFabricItems(),
+      fetchCategories(),
+      fetchFestivalBanners()
+    ]);
+  };
 
   const fetchFabricItems = async () => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('fabric_items')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*');
+
+      // Apply filters
+      if (filters.category && filters.category !== 'all') {
+        query = query.eq('category', filters.category);
+      }
+      
+      if (filters.minPrice !== undefined) {
+        query = query.gte('price', filters.minPrice);
+      }
+      
+      if (filters.maxPrice !== undefined) {
+        query = query.lte('price', filters.maxPrice);
+      }
+      
+      if (filters.color) {
+        query = query.ilike('color', `%${filters.color}%`);
+      }
+      
+      if (filters.material) {
+        query = query.ilike('material', `%${filters.material}%`);
+      }
+      
+      if (filters.featured !== undefined) {
+        query = query.eq('featured', filters.featured);
+      }
+      
+      if (filters.searchQuery) {
+        query = query.or(`name.ilike.%${filters.searchQuery}%,description.ilike.%${filters.searchQuery}%`);
+      }
+
+      // Order by: featured first, then by discount (top offers), then by creation date
+      query = query.order('featured', { ascending: false })
+                   .order('discount', { ascending: false })
+                   .order('created_at', { ascending: false });
+
+      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching fabric items:', error);
@@ -43,6 +168,44 @@ export const useFabricItems = () => {
       toast.error('Failed to load fabric items');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('fabric_categories')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchFestivalBanners = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('festival_banners')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching festival banners:', error);
+        return;
+      }
+
+      setFestivalBanners(data || []);
+    } catch (error) {
+      console.error('Error fetching festival banners:', error);
     }
   };
 
@@ -88,7 +251,6 @@ export const useFabricItems = () => {
         return null;
       }
 
-      setFabricItems(prev => [data, ...prev]);
       toast.success('Fabric item added successfully!');
       return data;
     } catch (error) {
@@ -98,11 +260,48 @@ export const useFabricItems = () => {
     }
   };
 
+  const addFestivalBanner = async (banner: Omit<FestivalBanner, 'id' | 'created_at' | 'updated_at'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('festival_banners')
+        .insert([banner])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error adding festival banner:', error);
+        toast.error('Failed to add festival banner');
+        return null;
+      }
+
+      toast.success('Festival banner added successfully!');
+      return data;
+    } catch (error) {
+      console.error('Error adding festival banner:', error);
+      toast.error('Failed to add festival banner');
+      return null;
+    }
+  };
+
+  const updateFilters = (newFilters: Partial<FabricFilters>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+  };
+
+  const clearFilters = () => {
+    setFilters({});
+  };
+
   return {
     fabricItems,
+    categories,
+    festivalBanners,
     loading,
+    filters,
     addFabricItem,
+    addFestivalBanner,
     uploadImage,
-    refetch: fetchFabricItems
+    updateFilters,
+    clearFilters,
+    refetch: fetchData,
   };
 };

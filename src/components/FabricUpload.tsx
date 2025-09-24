@@ -12,7 +12,7 @@ interface FabricUploadProps {
 }
 
 export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
-  const { addFabricItem, uploadImage } = useFabricItems();
+  const { addFabricItem, uploadImage, categories } = useFabricItems();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -21,6 +21,12 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
     description: "",
     price: "",
     discount: "",
+    category: "",
+    material: "",
+    color: "",
+    pattern: "",
+    stock: "100",
+    featured: false,
     instagramUrl: "",
     pinterestUrl: "",
     youtubeUrl: "",
@@ -61,6 +67,13 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
         description: formData.description,
         price: parseFloat(formData.price),
         discount: parseFloat(formData.discount) || 0,
+        category: formData.category,
+        featured: formData.featured,
+        stock_quantity: parseInt(formData.stock) || 100,
+        fabric_type: null,
+        color: formData.color || null,
+        pattern: formData.pattern || null,
+        material: formData.material || null,
         image_url: imageUrl,
         instagram_url: formData.instagramUrl || null,
         pinterest_url: formData.pinterestUrl || null,
@@ -122,6 +135,27 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
                 </div>
                 
                 <div className="space-y-2">
+                  <Label htmlFor="category" className="text-sm font-medium text-foreground">
+                    Category *
+                  </Label>
+                  <select
+                    id="category"
+                    value={formData.category}
+                    onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                    className="input-boutique w-full"
+                    required
+                    disabled={loading}
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.name}>{cat.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <Label htmlFor="price" className="text-sm font-medium text-foreground">
                     Price (₹) *
                   </Label>
@@ -138,9 +172,7 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
                     disabled={loading}
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
                 <div className="space-y-2">
                   <Label htmlFor="discount" className="text-sm font-medium text-foreground">
                     Discount (%)
@@ -154,6 +186,69 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
                     value={formData.discount}
                     onChange={(e) => setFormData(prev => ({ ...prev, discount: e.target.value }))}
                     placeholder="0"
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              {/* Fabric Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="material" className="text-sm font-medium text-foreground">
+                    Material
+                  </Label>
+                  <Input
+                    id="material"
+                    value={formData.material}
+                    onChange={(e) => setFormData(prev => ({ ...prev, material: e.target.value }))}
+                    placeholder="e.g., Silk, Cotton"
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="color" className="text-sm font-medium text-foreground">
+                    Color
+                  </Label>
+                  <Input
+                    id="color"
+                    value={formData.color}
+                    onChange={(e) => setFormData(prev => ({ ...prev, color: e.target.value }))}
+                    placeholder="e.g., Red, Blue"
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="pattern" className="text-sm font-medium text-foreground">
+                    Pattern
+                  </Label>
+                  <Input
+                    id="pattern"
+                    value={formData.pattern}
+                    onChange={(e) => setFormData(prev => ({ ...prev, pattern: e.target.value }))}
+                    placeholder="e.g., Floral, Geometric"
+                    className="input-boutique"
+                    disabled={loading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="stock" className="text-sm font-medium text-foreground">
+                    Stock Quantity
+                  </Label>
+                  <Input
+                    id="stock"
+                    type="number"
+                    min="0"
+                    value={formData.stock}
+                    onChange={(e) => setFormData(prev => ({ ...prev, stock: e.target.value }))}
+                    placeholder="100"
                     className="input-boutique"
                     disabled={loading}
                   />
@@ -174,6 +269,20 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
                   required
                   disabled={loading}
                 />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  checked={formData.featured}
+                  onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                  className="rounded border-border"
+                  disabled={loading}
+                />
+                <Label htmlFor="featured" className="text-sm font-medium text-foreground">
+                  Mark as Featured (will appear in top sections)
+                </Label>
               </div>
             </div>
 
