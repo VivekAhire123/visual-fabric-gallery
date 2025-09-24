@@ -3,33 +3,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { X, Upload, Instagram, Youtube } from "lucide-react";
-import { toast } from "sonner";
-
-interface FabricItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount: number;
-  image: string;
-  instagramUrl: string;
-  pinterestUrl: string;
-  youtubeUrl: string;
-}
+import { X, Upload, Instagram, Youtube, Loader2 } from "lucide-react";
+import { useFabricItems } from "@/hooks/useFabricItems";
 
 interface FabricUploadProps {
   onClose: () => void;
-  onSubmit: (item: FabricItem) => void;
+  onSubmit: () => void;
 }
 
 export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
+  const { addFabricItem, uploadImage } = useFabricItems();
+  const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
     discount: "",
-    image: "",
     instagramUrl: "",
     pinterestUrl: "",
     youtubeUrl: "",
@@ -38,37 +29,53 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
-        setFormData(prev => ({ ...prev, image: e.target?.result as string }));
+        setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.image || !formData.description || !formData.price) {
-      toast.error("Please fill in all required fields (name, description, price, and image)");
+    if (!formData.name || !imageFile || !formData.description || !formData.price) {
       return;
     }
 
-    const newItem: FabricItem = {
-      id: Date.now().toString(),
-      name: formData.name,
-      description: formData.description,
-      price: parseFloat(formData.price),
-      discount: parseFloat(formData.discount) || 0,
-      image: formData.image,
-      instagramUrl: formData.instagramUrl,
-      pinterestUrl: formData.pinterestUrl,
-      youtubeUrl: formData.youtubeUrl,
-    };
+    setLoading(true);
+    
+    try {
+      // Upload image first
+      const imageUrl = await uploadImage(imageFile);
+      if (!imageUrl) {
+        setLoading(false);
+        return;
+      }
 
-    onSubmit(newItem);
-    toast.success("Fabric item uploaded successfully!");
-    onClose();
+      // Add fabric item to database
+      const newItem = await addFabricItem({
+        name: formData.name,
+        description: formData.description,
+        price: parseFloat(formData.price),
+        discount: parseFloat(formData.discount) || 0,
+        image_url: imageUrl,
+        instagram_url: formData.instagramUrl || null,
+        pinterest_url: formData.pinterestUrl || null,
+        youtube_url: formData.youtubeUrl || null,
+      });
+
+      if (newItem) {
+        onSubmit();
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error submitting fabric item:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -171,9 +178,9 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
                   htmlFor="image"
                   className="flex items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
                 >
-                  {formData.image ? (
+                  {imagePreview ? (
                     <img
-                      src={formData.image}
+                      src={imagePreview}
                       alt="Preview"
                       className="w-full h-full object-cover rounded-lg"
                     />
@@ -234,11 +241,18 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
             </div>
 
             <div className="flex gap-3 pt-4">
-              <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+              <Button type="button" variant="outline" onClick={onClose} className="flex-1" disabled={loading}>
                 Cancel
               </Button>
-              <Button type="submit" className="flex-1 bg-primary hover:bg-primary/90">
-                Upload Fabric
+              <Button type="submit" className="flex-1 bg-primary hover:bg-primary/90" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  'Upload Fabric'
+                )}
               </Button>
             </div>
           </form>

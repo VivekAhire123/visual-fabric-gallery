@@ -2,18 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { X, Instagram, Youtube, ExternalLink } from "lucide-react";
-
-interface FabricItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount: number;
-  image: string;
-  instagramUrl: string;
-  pinterestUrl: string;
-  youtubeUrl: string;
-}
+import { FabricItem } from "@/hooks/useFabricItems";
 
 interface SocialMediaModalProps {
   item: FabricItem;
@@ -33,8 +22,8 @@ const getInstagramEmbedCode = (url: string) => {
 };
 
 export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
-  const youtubeId = item.youtubeUrl ? getYouTubeEmbedId(item.youtubeUrl) : null;
-  const instagramId = item.instagramUrl ? getInstagramEmbedCode(item.instagramUrl) : null;
+  const youtubeId = item.youtube_url ? getYouTubeEmbedId(item.youtube_url) : null;
+  const instagramId = item.instagram_url ? getInstagramEmbedCode(item.instagram_url) : null;
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
@@ -77,7 +66,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                 <h3 className="text-lg font-semibold mb-3">Product Image</h3>
                 <div className="aspect-square rounded-xl overflow-hidden shadow-medium">
                   <img
-                    src={item.image}
+                    src={item.image_url}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -99,7 +88,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                 <div className="space-y-3 sm:space-y-4">
                   
                   {/* Instagram Reel */}
-                  {item.instagramUrl && (
+                  {item.instagram_url && (
                     <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-between mb-3">
                         <Badge className="bg-gradient-to-r from-purple-500 to-pink-500">
@@ -109,8 +98,8 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                         <Button
                           size="sm"
                           onClick={() => {
-                            const appUrl = `instagram://media?id=${getInstagramEmbedCode(item.instagramUrl)}`;
-                            const webUrl = item.instagramUrl;
+                            const appUrl = `instagram://media?id=${getInstagramEmbedCode(item.instagram_url!)}`;
+                            const webUrl = item.instagram_url!;
                             
                             // Try to open in Instagram app first
                             const link = document.createElement('a');
@@ -137,7 +126,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                   )}
 
                   {/* Pinterest */}
-                  {item.pinterestUrl && (
+                  {item.pinterest_url && (
                     <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-between mb-3">
                         <Badge className="bg-red-600">
@@ -147,8 +136,8 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                         <Button
                           size="sm"
                           onClick={() => {
-                            const appUrl = `pinterest://pin/${item.pinterestUrl.split('/').pop()}`;
-                            const webUrl = item.pinterestUrl;
+                            const appUrl = `pinterest://pin/${item.pinterest_url!.split('/').pop()}`;
+                            const webUrl = item.pinterest_url!;
                             
                             // Try Pinterest app first
                             const link = document.createElement('a');
@@ -175,7 +164,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                   )}
 
                   {/* YouTube Video */}
-                  {item.youtubeUrl && (
+                  {item.youtube_url && (
                     <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-between mb-3">
                         <Badge className="bg-red-600">
@@ -185,9 +174,9 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                         <Button
                           size="sm"
                           onClick={() => {
-                            const videoId = getYouTubeEmbedId(item.youtubeUrl);
+                            const videoId = getYouTubeEmbedId(item.youtube_url!);
                             const appUrl = `youtube://watch?v=${videoId}`;
-                            const webUrl = item.youtubeUrl;
+                            const webUrl = item.youtube_url!;
                             
                             // Try YouTube app first
                             const link = document.createElement('a');
@@ -224,7 +213,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                     </div>
                   )}
 
-                  {!item.instagramUrl && !item.pinterestUrl && !item.youtubeUrl && (
+                  {!item.instagram_url && !item.pinterest_url && !item.youtube_url && (
                     <div className="text-center py-8 text-muted-foreground">
                       <p>No social media content available for this fabric.</p>
                       <p className="text-sm mt-2">Add links when uploading to showcase your content!</p>

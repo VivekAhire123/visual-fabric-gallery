@@ -94,6 +94,48 @@ export type Database = {
           },
         ]
       }
+      fabric_items: {
+        Row: {
+          created_at: string
+          description: string
+          discount: number | null
+          id: string
+          image_url: string
+          instagram_url: string | null
+          name: string
+          pinterest_url: string | null
+          price: number
+          updated_at: string
+          youtube_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          discount?: number | null
+          id?: string
+          image_url: string
+          instagram_url?: string | null
+          name: string
+          pinterest_url?: string | null
+          price: number
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          discount?: number | null
+          id?: string
+          image_url?: string
+          instagram_url?: string | null
+          name?: string
+          pinterest_url?: string | null
+          price?: number
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
       leave_requests: {
         Row: {
           applied_at: string

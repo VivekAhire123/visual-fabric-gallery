@@ -1,26 +1,43 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Instagram, Youtube, ExternalLink } from "lucide-react";
-
-interface FabricItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount: number;
-  image: string;
-  instagramUrl: string;
-  pinterestUrl: string;
-  youtubeUrl: string;
-}
+import { useFabricItems, FabricItem } from "@/hooks/useFabricItems";
 
 interface FabricGalleryProps {
-  items: FabricItem[];
   onItemClick: (item: FabricItem) => void;
 }
 
-export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
-  if (items.length === 0) {
+export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
+  const { fabricItems, loading } = useFabricItems();
+
+  if (loading) {
+    return (
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 gradient-text">
+            Loading Fabric Collection...
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <Card key={i} className="card-gradient overflow-hidden">
+                <div className="aspect-square">
+                  <Skeleton className="w-full h-full" />
+                </div>
+                <CardContent className="p-4 space-y-2">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (fabricItems.length === 0) {
     return (
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
@@ -56,7 +73,7 @@ export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {items.map((item) => (
+          {fabricItems.map((item) => (
             <Card
               key={item.id}
               className="card-gradient cursor-pointer hover-lift group overflow-hidden"
@@ -64,7 +81,7 @@ export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
             >
               <div className="aspect-square overflow-hidden">
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -98,19 +115,19 @@ export const FabricGallery = ({ items, onItemClick }: FabricGalleryProps) => {
                 </div>
                 
                 <div className="flex flex-wrap gap-1 sm:gap-2 mb-3">
-                  {item.instagramUrl && (
+                  {item.instagram_url && (
                     <Badge variant="secondary" className="text-xs">
                       <Instagram className="h-3 w-3 mr-1" />
                       Reel
                     </Badge>
                   )}
-                  {item.pinterestUrl && (
+                  {item.pinterest_url && (
                     <Badge variant="secondary" className="text-xs">
                       <div className="h-3 w-3 bg-red-500 rounded-sm mr-1" />
                       Pin
                     </Badge>
                   )}
-                  {item.youtubeUrl && (
+                  {item.youtube_url && (
                     <Badge variant="secondary" className="text-xs">
                       <Youtube className="h-3 w-3 mr-1" />
                       Video

@@ -3,26 +3,14 @@ import { Hero } from "@/components/Hero";
 import { FabricUpload } from "@/components/FabricUpload";
 import { FabricGallery } from "@/components/FabricGallery";
 import { SocialMediaModal } from "@/components/SocialMediaModal";
-
-interface FabricItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount: number;
-  image: string;
-  instagramUrl: string;
-  pinterestUrl: string;
-  youtubeUrl: string;
-}
+import { FabricItem } from "@/hooks/useFabricItems";
 
 const Index = () => {
-  const [fabricItems, setFabricItems] = useState<FabricItem[]>([]);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<FabricItem | null>(null);
 
-  const handleUploadSubmit = (item: FabricItem) => {
-    setFabricItems(prev => [...prev, item]);
+  const handleUploadSubmit = () => {
+    // Refresh will happen automatically through the hook
   };
 
   const handleItemClick = (item: FabricItem) => {
@@ -34,7 +22,6 @@ const Index = () => {
       <Hero onUploadClick={() => setIsUploadOpen(true)} />
       
       <FabricGallery 
-        items={fabricItems}
         onItemClick={handleItemClick}
       />
 
