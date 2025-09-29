@@ -12,6 +12,10 @@ export interface FabricItem {
   instagram_url: string | null;
   pinterest_url: string | null;
   youtube_url: string | null;
+  facebook_url: string | null;
+  twitter_url: string | null;
+  tiktok_url: string | null;
+  whatsapp_url: string | null;
   category: string;
   featured: boolean;
   stock_quantity: number;
