@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { X, Upload, Instagram, Youtube, Loader2, Facebook, Twitter, MessageCircle, Music } from "lucide-react";
+import { X, Upload, Instagram, Youtube, Loader2, Link } from "lucide-react";
 import { useFabricItems } from "@/hooks/useFabricItems";
 import { toast } from "sonner";
 
@@ -30,11 +30,7 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
     featured: false,
     instagramUrl: "",
     pinterestUrl: "",
-    youtubeUrl: "",
-    facebookUrl: "",
-    twitterUrl: "",
-    tiktokUrl: "",
-    whatsappUrl: "",
+    otherLink: "",
   });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,11 +106,7 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
         image_url: imageUrl,
         instagram_url: formData.instagramUrl?.trim() || null,
         pinterest_url: formData.pinterestUrl?.trim() || null,
-        youtube_url: formData.youtubeUrl?.trim() || null,
-        facebook_url: formData.facebookUrl?.trim() || null,
-        twitter_url: formData.twitterUrl?.trim() || null,
-        tiktok_url: formData.tiktokUrl?.trim() || null,
-        whatsapp_url: formData.whatsappUrl?.trim() || null,
+        other_link: formData.otherLink?.trim() || null,
       });
 
       if (newItem) {
@@ -419,75 +411,15 @@ export const FabricUpload = ({ onClose, onSubmit }: FabricUploadProps) => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="youtube" className="text-sm font-medium flex items-center gap-2">
-                    <Youtube className="h-4 w-4 text-red-600" />
-                    YouTube Video URL
+                  <Label htmlFor="otherLink" className="text-sm font-medium flex items-center gap-2">
+                    <Link className="h-4 w-4 text-gray-600" />
+                    Other Link
                   </Label>
                   <Input
-                    id="youtube"
-                    value={formData.youtubeUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, youtubeUrl: e.target.value }))}
-                    placeholder="https://youtube.com/watch?v=..."
-                    className="input-boutique"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="facebook" className="text-sm font-medium flex items-center gap-2">
-                    <Facebook className="h-4 w-4 text-blue-600" />
-                    Facebook Post URL
-                  </Label>
-                  <Input
-                    id="facebook"
-                    value={formData.facebookUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, facebookUrl: e.target.value }))}
-                    placeholder="https://facebook.com/post/..."
-                    className="input-boutique"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="twitter" className="text-sm font-medium flex items-center gap-2">
-                    <Twitter className="h-4 w-4 text-black" />
-                    Twitter Post URL
-                  </Label>
-                  <Input
-                    id="twitter"
-                    value={formData.twitterUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, twitterUrl: e.target.value }))}
-                    placeholder="https://twitter.com/post/..."
-                    className="input-boutique"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="tiktok" className="text-sm font-medium flex items-center gap-2">
-                    <Music className="h-4 w-4 text-black" />
-                    TikTok Video URL
-                  </Label>
-                  <Input
-                    id="tiktok"
-                    value={formData.tiktokUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, tiktokUrl: e.target.value }))}
-                    placeholder="https://tiktok.com/@user/video/..."
-                    className="input-boutique"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="whatsapp" className="text-sm font-medium flex items-center gap-2">
-                    <MessageCircle className="h-4 w-4 text-green-600" />
-                    WhatsApp Contact URL
-                  </Label>
-                  <Input
-                    id="whatsapp"
-                    value={formData.whatsappUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, whatsappUrl: e.target.value }))}
-                    placeholder="https://wa.me/1234567890"
+                    id="otherLink"
+                    value={formData.otherLink}
+                    onChange={(e) => setFormData(prev => ({ ...prev, otherLink: e.target.value }))}
+                    placeholder="https://example.com/..."
                     className="input-boutique"
                     disabled={loading}
                   />

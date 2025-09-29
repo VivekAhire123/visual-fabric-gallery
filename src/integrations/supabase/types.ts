@@ -55,21 +55,18 @@ export type Database = {
           description: string
           discount: number | null
           fabric_type: string | null
-          facebook_url: string | null
           featured: boolean | null
           id: string
           image_url: string
           instagram_url: string | null
           material: string | null
           name: string
+          other_link: string | null
           pattern: string | null
           pinterest_url: string | null
           price: number
           stock_quantity: number | null
-          tiktok_url: string | null
-          twitter_url: string | null
           updated_at: string
-          whatsapp_url: string | null
           youtube_url: string | null
         }
         Insert: {
@@ -79,21 +76,18 @@ export type Database = {
           description: string
           discount?: number | null
           fabric_type?: string | null
-          facebook_url?: string | null
           featured?: boolean | null
           id?: string
           image_url: string
           instagram_url?: string | null
           material?: string | null
           name: string
+          other_link?: string | null
           pattern?: string | null
           pinterest_url?: string | null
           price: number
           stock_quantity?: number | null
-          tiktok_url?: string | null
-          twitter_url?: string | null
           updated_at?: string
-          whatsapp_url?: string | null
           youtube_url?: string | null
         }
         Update: {
@@ -103,21 +97,18 @@ export type Database = {
           description?: string
           discount?: number | null
           fabric_type?: string | null
-          facebook_url?: string | null
           featured?: boolean | null
           id?: string
           image_url?: string
           instagram_url?: string | null
           material?: string | null
           name?: string
+          other_link?: string | null
           pattern?: string | null
           pinterest_url?: string | null
           price?: number
           stock_quantity?: number | null
-          tiktok_url?: string | null
-          twitter_url?: string | null
           updated_at?: string
-          whatsapp_url?: string | null
           youtube_url?: string | null
         }
         Relationships: []

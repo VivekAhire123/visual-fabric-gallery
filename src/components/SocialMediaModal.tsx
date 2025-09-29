@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { X, Instagram, Youtube, ExternalLink, Facebook, Twitter, MessageCircle, Music } from "lucide-react";
+import { X, Instagram, ExternalLink, Link } from "lucide-react";
 import { FabricItem } from "@/hooks/useFabricItems";
 import { PinterestImageModal } from "./PinterestImageModal";
 
@@ -25,7 +25,6 @@ const getInstagramEmbedCode = (url: string) => {
 
 export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
   const [pinterestModalOpen, setPinterestModalOpen] = useState(false);
-  const youtubeId = item.youtube_url ? getYouTubeEmbedId(item.youtube_url) : null;
   const instagramId = item.instagram_url ? getInstagramEmbedCode(item.instagram_url) : null;
 
   const openSocialMediaApp = (appUrl: string, webUrl: string) => {
@@ -172,161 +171,32 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                       <div className="text-sm text-muted-foreground">
                         View this fabric on Pinterest for inspiration
                       </div>
-                    </div>
-                  )}
+                     </div>
+                   )}
 
-                  {/* Facebook */}
-                  {item.facebook_url && (
+                   {/* Other Link */}
+                  {item.other_link && (
                     <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-between mb-3">
-                        <Badge className="bg-blue-600">
-                          <Facebook className="h-4 w-4 mr-1" />
-                          Facebook
+                        <Badge className="bg-gray-600">
+                          <Link className="h-4 w-4 mr-1" />
+                          Other Link
                         </Badge>
                         <Button
                           size="sm"
-                          onClick={() => openSocialMediaApp(
-                            `fb://post/${item.facebook_url!.split('/').pop()}`,
-                            item.facebook_url!
-                          )}
-                          className="bg-blue-600 hover:bg-blue-700"
+                          onClick={() => window.open(item.other_link!, '_blank', 'noopener,noreferrer')}
+                          className="bg-gray-600 hover:bg-gray-700"
                         >
                           <ExternalLink className="h-4 w-4" />
                         </Button>
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        See more on Facebook
+                        Visit external link
                       </div>
                     </div>
                   )}
 
-                  {/* Twitter */}
-                  {item.twitter_url && (
-                    <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge className="bg-black">
-                          <Twitter className="h-4 w-4 mr-1" />
-                          Twitter
-                        </Badge>
-                        <Button
-                          size="sm"
-                          onClick={() => openSocialMediaApp(
-                            `twitter://status/${item.twitter_url!.split('/').pop()}`,
-                            item.twitter_url!
-                          )}
-                          className="bg-black hover:bg-gray-800"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Follow us on Twitter
-                      </div>
-                    </div>
-                  )}
-
-                  {/* TikTok */}
-                  {item.tiktok_url && (
-                    <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge className="bg-black">
-                          <Music className="h-4 w-4 mr-1" />
-                          TikTok
-                        </Badge>
-                        <Button
-                          size="sm"
-                          onClick={() => openSocialMediaApp(
-                            `tiktok://video/${item.tiktok_url!.split('/').pop()}`,
-                            item.tiktok_url!
-                          )}
-                          className="bg-black hover:bg-gray-800"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Watch fabric tutorials on TikTok
-                      </div>
-                    </div>
-                  )}
-
-                  {/* WhatsApp */}
-                  {item.whatsapp_url && (
-                    <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge className="bg-green-600">
-                          <MessageCircle className="h-4 w-4 mr-1" />
-                          WhatsApp
-                        </Badge>
-                        <Button
-                          size="sm"
-                          onClick={() => openSocialMediaApp(
-                            item.whatsapp_url!,
-                            item.whatsapp_url!
-                          )}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Contact us on WhatsApp
-                      </div>
-                    </div>
-                  )}
-
-                  {/* YouTube Video */}
-                  {item.youtube_url && (
-                    <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge className="bg-red-600">
-                          <Youtube className="h-4 w-4 mr-1" />
-                          YouTube Video
-                        </Badge>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            const videoId = getYouTubeEmbedId(item.youtube_url!);
-                            const appUrl = `youtube://watch?v=${videoId}`;
-                            const webUrl = item.youtube_url!;
-                            
-                            // Try YouTube app first
-                            const link = document.createElement('a');
-                            link.href = appUrl;
-                            link.style.display = 'none';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                            
-                            // Fallback to web
-                            setTimeout(() => {
-                              window.open(webUrl, '_blank', 'noopener,noreferrer');
-                            }, 1000);
-                          }}
-                          className="bg-red-600 hover:bg-red-700"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      {youtubeId ? (
-                        <div className="aspect-video rounded-lg overflow-hidden">
-                          <iframe
-                            src={`https://www.youtube.com/embed/${youtubeId}`}
-                            title={`${item.name} - YouTube Video`}
-                            className="w-full h-full"
-                            allowFullScreen
-                          />
-                        </div>
-                      ) : (
-                        <div className="text-sm text-muted-foreground">
-                          YouTube video available - tap to watch
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {!item.instagram_url && !item.pinterest_url && !item.youtube_url && 
-                   !item.facebook_url && !item.twitter_url && !item.tiktok_url && !item.whatsapp_url && (
+                  {!item.instagram_url && !item.pinterest_url && !item.other_link && (
                     <div className="text-center py-8 text-muted-foreground">
                       <p>No social media content available for this fabric.</p>
                       <p className="text-sm mt-2">Add links when uploading to showcase your content!</p>

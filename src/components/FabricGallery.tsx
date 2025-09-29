@@ -138,10 +138,10 @@ export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
                       Pin
                     </Badge>
                   )}
-                  {item.youtube_url && (
-                    <Badge variant="secondary" className="text-xs bg-red-600/10 text-red-700 border-red-200">
-                      <Youtube className="h-3 w-3 mr-1" />
-                      Video
+                  {item.other_link && (
+                    <Badge variant="secondary" className="text-xs bg-gray-500/10 text-gray-700 border-gray-200">
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      Link
                     </Badge>
                   )}
                 </div>

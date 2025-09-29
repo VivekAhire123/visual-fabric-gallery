@@ -26,11 +26,7 @@ interface FabricItem {
   image_url: string;
   instagram_url: string | null;
   pinterest_url: string | null;
-  youtube_url: string | null;
-  facebook_url: string | null;
-  twitter_url: string | null;
-  tiktok_url: string | null;
-  whatsapp_url: string | null;
+  other_link: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -377,72 +373,16 @@ export const CollectionManagement = ({ onClose }: CollectionManagementProps) => 
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="edit-youtube" className="text-sm font-medium flex items-center gap-2">
-                          <div className="h-3 w-3 bg-red-600 rounded-sm" />
-                          YouTube
+                      <div className="space-y-2 sm:col-span-2">
+                        <Label htmlFor="edit-other" className="text-sm font-medium flex items-center gap-2">
+                          <div className="h-3 w-3 bg-gray-500 rounded-sm" />
+                          Other Link
                         </Label>
                         <Input
-                          id="edit-youtube"
-                          value={editingItem.youtube_url || ""}
-                          onChange={(e) => setEditingItem({...editingItem, youtube_url: e.target.value || null})}
-                          placeholder="https://youtube.com/watch?v=..."
-                          className="input-boutique text-sm"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="edit-facebook" className="text-sm font-medium flex items-center gap-2">
-                          <div className="h-3 w-3 bg-blue-600 rounded-sm" />
-                          Facebook
-                        </Label>
-                        <Input
-                          id="edit-facebook"
-                          value={editingItem.facebook_url || ""}
-                          onChange={(e) => setEditingItem({...editingItem, facebook_url: e.target.value || null})}
-                          placeholder="https://facebook.com/post/..."
-                          className="input-boutique text-sm"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="edit-twitter" className="text-sm font-medium flex items-center gap-2">
-                          <div className="h-3 w-3 bg-black rounded-sm" />
-                          Twitter
-                        </Label>
-                        <Input
-                          id="edit-twitter"
-                          value={editingItem.twitter_url || ""}
-                          onChange={(e) => setEditingItem({...editingItem, twitter_url: e.target.value || null})}
-                          placeholder="https://twitter.com/post/..."
-                          className="input-boutique text-sm"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="edit-tiktok" className="text-sm font-medium flex items-center gap-2">
-                          <div className="h-3 w-3 bg-black rounded-sm" />
-                          TikTok
-                        </Label>
-                        <Input
-                          id="edit-tiktok"
-                          value={editingItem.tiktok_url || ""}
-                          onChange={(e) => setEditingItem({...editingItem, tiktok_url: e.target.value || null})}
-                          placeholder="https://tiktok.com/@user/video/..."
-                          className="input-boutique text-sm"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="edit-whatsapp" className="text-sm font-medium flex items-center gap-2">
-                          <div className="h-3 w-3 bg-green-600 rounded-sm" />
-                          WhatsApp
-                        </Label>
-                        <Input
-                          id="edit-whatsapp"
-                          value={editingItem.whatsapp_url || ""}
-                          onChange={(e) => setEditingItem({...editingItem, whatsapp_url: e.target.value || null})}
-                          placeholder="https://wa.me/1234567890"
+                          id="edit-other"
+                          value={editingItem.other_link || ""}
+                          onChange={(e) => setEditingItem({...editingItem, other_link: e.target.value || null})}
+                          placeholder="https://example.com/..."
                           className="input-boutique text-sm"
                         />
                       </div>
