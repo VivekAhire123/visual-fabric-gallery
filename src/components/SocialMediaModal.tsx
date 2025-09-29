@@ -102,7 +102,7 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                 <h3 className="text-lg font-semibold mb-4">Available Content</h3>
                 <div className="space-y-3 sm:space-y-4">
                   
-                  {/* Instagram Reel */}
+                   {/* Instagram Reel */}
                   {item.instagram_url && (
                     <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-between mb-3">
@@ -110,37 +110,23 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                           <Instagram className="h-4 w-4 mr-1" />
                           Instagram Reel
                         </Badge>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            const appUrl = `instagram://media?id=${getInstagramEmbedCode(item.instagram_url!)}`;
-                            const webUrl = item.instagram_url!;
-                            
-                            // Try to open in Instagram app first
-                            const link = document.createElement('a');
-                            link.href = appUrl;
-                            link.style.display = 'none';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                            
-                            // Fallback to web version after a short delay
-                            setTimeout(() => {
-                              window.open(webUrl, '_blank', 'noopener,noreferrer');
-                            }, 1000);
-                          }}
-                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        Tap to view the Instagram reel
+                      <div className="w-full">
+                        <iframe
+                          src={`${item.instagram_url}embed/`}
+                          width="100%"
+                          height="400"
+                          frameBorder="0"
+                          scrolling="no"
+                          allowTransparency={true}
+                          className="rounded-lg border"
+                          title="Instagram embed"
+                        />
                       </div>
                     </div>
                   )}
 
-                  {/* Pinterest */}
+                   {/* Pinterest */}
                   {item.pinterest_url && (
                     <div className="p-3 sm:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-between mb-3">
@@ -148,31 +134,20 @@ export const SocialMediaModal = ({ item, onClose }: SocialMediaModalProps) => {
                           <div className="h-4 w-4 bg-white rounded-sm mr-1" />
                           Pinterest
                         </Badge>
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            onClick={() => setPinterestModalOpen(true)}
-                            className="bg-red-600 hover:bg-red-700"
-                          >
-                            View Image
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => openSocialMediaApp(
-                              `pinterest://pin/${item.pinterest_url!.split('/').pop()}`,
-                              item.pinterest_url!
-                            )}
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                          </Button>
-                        </div>
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        View this fabric on Pinterest for inspiration
+                      <div className="w-full">
+                        <iframe
+                          src={`${item.pinterest_url}?embed=true`}
+                          width="100%"
+                          height="400"
+                          frameBorder="0"
+                          scrolling="no"
+                          className="rounded-lg border"
+                          title="Pinterest embed"
+                        />
                       </div>
-                     </div>
-                   )}
+                    </div>
+                  )}
 
                    {/* Other Link */}
                   {item.other_link && (
