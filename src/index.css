@@ -318,4 +318,14 @@
     border-bottom: 4px solid transparent;
     opacity: 0.5;
   }
+
+  /* Hide scrollbar for slideshow */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -6,6 +6,7 @@ import { FestivalBanners } from "@/components/FestivalBanners";
 import { FabricFilterSection } from "@/components/FabricFilters";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { EnhancedFilters } from "@/components/EnhancedFilters";
+import { FeaturedSlideshow } from "@/components/FeaturedSlideshow";
 import { FabricItem } from "@/hooks/useFabricItems";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -51,6 +52,10 @@ const Index = () => {
   return (
     <div className={`min-h-screen bg-background ${isMobile ? 'mobile-content' : ''}`}>
       <Hero />
+      
+      <FeaturedSlideshow 
+        onItemClick={handleItemClick}
+      />
       
       <FestivalBanners />
       
