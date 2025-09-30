@@ -46,10 +46,23 @@ export const FabricFilterSection = () => {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search fabrics..."
+              placeholder="Search by name, description, category, material..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
+              onBlur={() => {
+                // Dismiss keyboard on mobile after typing
+                if (isMobile) {
+                  setTimeout(() => {
+                    (document.activeElement as HTMLElement)?.blur();
+                  }, 100);
+                }
+              }}
               className="pl-10 input-boutique"
+              inputMode="search"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           

@@ -277,6 +277,17 @@
     .mobile-scroll-snap>* {
       scroll-snap-align: start;
     }
+
+    /* Mobile filter improvements */
+    .mobile-filter-container {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    .mobile-input-focus {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
   }
 
   /* Touch-friendly interactions */

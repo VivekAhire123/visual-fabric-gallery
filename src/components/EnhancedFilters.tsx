@@ -45,10 +45,33 @@ const sortOptions = [
 export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersProps) => {
   const { categories, filters, updateFilters, clearFilters, fabricItems } = useFabricItems();
   const [searchQuery, setSearchQuery] = useState(filters.searchQuery || "");
+  
+  // Calculate actual price range from fabric items
+  const actualPriceRange = React.useMemo(() => {
+    if (fabricItems.length === 0) return { min: 0, max: 10000 };
+    
+    const prices = fabricItems.map(item => item.price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    
+    return { min: minPrice, max: maxPrice };
+  }, [fabricItems]);
+  
   const [priceRange, setPriceRange] = useState([
-    filters.minPrice || 0,
-    filters.maxPrice || 10000
+    filters.minPrice || actualPriceRange.min,
+    filters.maxPrice || actualPriceRange.max
   ]);
+  
+  // Update price range when actual range changes
+  React.useEffect(() => {
+    if (fabricItems.length > 0) {
+      setPriceRange([
+        filters.minPrice || actualPriceRange.min,
+        filters.maxPrice || actualPriceRange.max
+      ]);
+    }
+  }, [actualPriceRange, filters.minPrice, filters.maxPrice]);
+  
   const [selectedColors, setSelectedColors] = useState<string[]>(
     filters.color ? filters.color.split(",") : []
   );
@@ -63,8 +86,8 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
   const handlePriceRangeChange = (value: number[]) => {
     setPriceRange(value);
     updateFilters({ 
-      minPrice: value[0] > 0 ? value[0] : undefined,
-      maxPrice: value[1] < 10000 ? value[1] : undefined
+      minPrice: value[0] > actualPriceRange.min ? value[0] : undefined,
+      maxPrice: value[1] < actualPriceRange.max ? value[1] : undefined
     });
   };
 
@@ -73,24 +96,24 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
   const handleMinPriceInput = (raw: string) => {
     const numeric = Number(raw.replace(/[^0-9]/g, ""));
     const currentMax = priceRange[1];
-    const nextMin = clamp(Number.isNaN(numeric) ? 0 : numeric, 0, currentMax);
+    const nextMin = clamp(Number.isNaN(numeric) ? actualPriceRange.min : numeric, actualPriceRange.min, currentMax);
     const next = [nextMin, currentMax] as [number, number];
     setPriceRange(next);
     updateFilters({
-      minPrice: nextMin > 0 ? nextMin : undefined,
-      maxPrice: currentMax < 10000 ? currentMax : undefined,
+      minPrice: nextMin > actualPriceRange.min ? nextMin : undefined,
+      maxPrice: currentMax < actualPriceRange.max ? currentMax : undefined,
     });
   };
 
   const handleMaxPriceInput = (raw: string) => {
     const numeric = Number(raw.replace(/[^0-9]/g, ""));
     const currentMin = priceRange[0];
-    const nextMax = clamp(Number.isNaN(numeric) ? 0 : numeric, currentMin, 10000);
+    const nextMax = clamp(Number.isNaN(numeric) ? actualPriceRange.max : numeric, currentMin, actualPriceRange.max);
     const next = [currentMin, nextMax] as [number, number];
     setPriceRange(next);
     updateFilters({
-      minPrice: currentMin > 0 ? currentMin : undefined,
-      maxPrice: nextMax < 10000 ? nextMax : undefined,
+      minPrice: currentMin > actualPriceRange.min ? currentMin : undefined,
+      maxPrice: nextMax < actualPriceRange.max ? nextMax : undefined,
     });
   };
 
@@ -127,9 +150,9 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
   const topOffers = fabricItems.filter(item => item.discount > 0).slice(0, 3);
 
   return (
-    <div className={`${isMobile ? 'fixed inset-0 z-50 bg-background' : ''}`}>
+    <div className={`${isMobile ? 'fixed inset-0 z-50 bg-background flex flex-col' : ''}`}>
       {isMobile && (
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between p-4 border-b bg-background flex-shrink-0">
           <h2 className="text-lg font-semibold">Filters & Search</h2>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-4 w-4" />
@@ -137,7 +160,7 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
         </div>
       )}
       
-      <div className={`${isMobile ? 'p-4 overflow-y-auto h-full' : ''}`}>
+      <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4 pb-20 mobile-filter-container' : ''}`}>
         <div className="space-y-6">
           
           {/* Search Bar */}
@@ -146,10 +169,23 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search by name, description..."
+                placeholder="Search by name, description, category, material, color..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 input-boutique"
+                onBlur={() => {
+                  // Dismiss keyboard on mobile after typing
+                  if (isMobile) {
+                    setTimeout(() => {
+                      (document.activeElement as HTMLElement)?.blur();
+                    }, 100);
+                  }
+                }}
+                className="pl-10 input-boutique mobile-input-focus"
+                inputMode="search"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
               />
             </div>
           </div>
@@ -166,7 +202,16 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
                     pattern="[0-9]*"
                     value={priceRange[0]}
                     onChange={(e) => handleMinPriceInput(e.target.value)}
-                    className="input-boutique"
+                    onBlur={() => {
+                      // Dismiss keyboard on mobile after typing
+                      if (isMobile) {
+                        setTimeout(() => {
+                          (document.activeElement as HTMLElement)?.blur();
+                        }, 100);
+                      }
+                    }}
+                    className="input-boutique mobile-input-focus"
+                    autoComplete="off"
                   />
                 </div>
                 <div className="space-y-1">
@@ -176,16 +221,25 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
                     pattern="[0-9]*"
                     value={priceRange[1]}
                     onChange={(e) => handleMaxPriceInput(e.target.value)}
-                    className="input-boutique"
+                    onBlur={() => {
+                      // Dismiss keyboard on mobile after typing
+                      if (isMobile) {
+                        setTimeout(() => {
+                          (document.activeElement as HTMLElement)?.blur();
+                        }, 100);
+                      }
+                    }}
+                    className="input-boutique mobile-input-focus"
+                    autoComplete="off"
                   />
                 </div>
               </div>
               <Slider
                 value={priceRange}
                 onValueChange={handlePriceRangeChange}
-                max={10000}
-                min={0}
-                step={100}
+                max={actualPriceRange.max}
+                min={actualPriceRange.min}
+                step={Math.max(1, Math.floor((actualPriceRange.max - actualPriceRange.min) / 100))}
                 className="w-full"
               />
               <div className="flex justify-between text-sm text-muted-foreground">
@@ -201,12 +255,12 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
               <Palette className="h-4 w-4" />
               Colors
             </Label>
-            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+            <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
               {fabricColors.map((color) => (
                 <button
                   key={color.value}
                   onClick={() => handleColorToggle(color.value)}
-                  className={`relative w-12 h-12 rounded-full border-2 transition-all duration-200 hover:scale-110 ${
+                  className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-200 hover:scale-110 ${
                     selectedColors.includes(color.value)
                       ? 'border-accent ring-2 ring-accent/20'
                       : 'border-border hover:border-accent/50'
@@ -288,12 +342,12 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
           {/* Category Pills */}
           <div className="space-y-3">
             <Label className="text-sm font-medium">Categories</Label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               <Button
                 variant={!filters.category || filters.category === "all" ? "default" : "outline"}
                 size="sm"
                 onClick={() => updateFilters({ category: undefined })}
-                className="rounded-full px-4 py-2"
+                className="rounded-full px-3 py-2 text-sm"
               >
                 <Tag className="h-3 w-3 mr-1" />
                 All Fabrics
@@ -304,7 +358,7 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
                   variant={filters.category === category.name ? "default" : "outline"}
                   size="sm"
                   onClick={() => updateFilters({ category: category.name })}
-                  className="rounded-full px-4 py-2"
+                  className="rounded-full px-3 py-2 text-sm"
                 >
                   {category.name}
                 </Button>
@@ -313,7 +367,7 @@ export const EnhancedFilters = ({ onClose, isMobile = false }: EnhancedFiltersPr
                 variant={filters.featured === true ? "default" : "outline"}
                 size="sm"
                 onClick={() => updateFilters({ featured: filters.featured === true ? undefined : true })}
-                className="rounded-full px-4 py-2"
+                className="rounded-full px-3 py-2 text-sm"
               >
                 <Star className="h-3 w-3 mr-1" />
                 Featured

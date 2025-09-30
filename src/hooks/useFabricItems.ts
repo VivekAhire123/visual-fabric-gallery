@@ -143,7 +143,7 @@ export const useFabricItems = () => {
       }
       
       if (filters.searchQuery) {
-        query = query.or(`name.ilike.%${filters.searchQuery}%,description.ilike.%${filters.searchQuery}%`);
+        query = query.or(`name.ilike.%${filters.searchQuery}%,description.ilike.%${filters.searchQuery}%,category.ilike.%${filters.searchQuery}%,material.ilike.%${filters.searchQuery}%,color.ilike.%${filters.searchQuery}%,pattern.ilike.%${filters.searchQuery}%`);
       }
 
       // Apply sorting based on sortBy filter
