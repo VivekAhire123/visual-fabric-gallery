@@ -20,25 +20,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Admin Access Button */}
-      <div className="fixed top-4 right-4 z-40">
-        {isAdmin ? (
-          <Button asChild className="btn-hero">
-            <Link to="/admin">
-              <Settings className="h-4 w-4 mr-2" />
-              Admin Panel
-            </Link>
-          </Button>
-        ) : (
-          <Button asChild variant="outline">
-            <Link to="/auth">
-              <Settings className="h-4 w-4 mr-2" />
-              Admin Login
-            </Link>
-          </Button>
-        )}
-      </div>
-
       <Hero />
       
       <FestivalBanners />
