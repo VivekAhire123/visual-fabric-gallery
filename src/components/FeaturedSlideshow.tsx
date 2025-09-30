@@ -39,7 +39,7 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
         setCurrentIndex((prevIndex) => 
           (prevIndex + 1) % featuredItems.length
         );
-      }, 4000); // Change slide every 4 seconds
+      }, 2500); // Change slide every 3 seconds
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -54,11 +54,11 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
     };
   }, [isPlaying, isHovered, featuredItems.length]);
 
-  // Smooth scroll to current item
+  // Scroll to show one complete item at a time
   useEffect(() => {
     if (scrollContainerRef.current && featuredItems.length > 0) {
       const container = scrollContainerRef.current;
-      const itemWidth = 320; // Approximate width of each item
+      const itemWidth = 320 + 24; // Item width + gap (w-80 + gap-6)
       const scrollPosition = currentIndex * itemWidth;
       
       container.scrollTo({
@@ -123,28 +123,61 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
             <ChevronRight className="h-5 w-5" />
           </Button>
 
-          {/* Play/Pause Button */}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={togglePlayPause}
-            className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-sm hover:bg-background shadow-lg"
-          >
-            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-          </Button>
+          {/* Play/Pause Button with Circular Progress */}
+          <div className="absolute top-4 right-4 z-10">
+            <div className="relative">
+              {/* Circular Progress Ring */}
+              <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  className="text-muted-foreground/20"
+                />
+                <circle
+                  cx="20"
+                  cy="20"
+                  r="18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeDasharray={`${2 * Math.PI * 18}`}
+                  strokeDashoffset={`${2 * Math.PI * 18 * (1 - (currentIndex + 1) / featuredItems.length)}`}
+                  className="text-accent transition-all duration-1000"
+                />
+              </svg>
+              
+              {/* Play/Pause Button */}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={togglePlayPause}
+                className="absolute inset-0 bg-background/80 backdrop-blur-sm hover:bg-background shadow-lg"
+              >
+                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              </Button>
+            </div>
+          </div>
 
           {/* Slideshow Items */}
           <div
             ref={scrollContainerRef}
             className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            style={{ 
+              scrollbarWidth: 'none', 
+              msOverflowStyle: 'none',
+              scrollBehavior: 'smooth'
+            }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             {featuredItems.map((item, index) => (
               <Card
                 key={item.id}
-                className={`flex-shrink-0 w-80 cursor-pointer hover-lift group overflow-hidden animate-scale-in ${
+                className={`flex-shrink-0 w-80 cursor-pointer hover-lift group overflow-hidden animate-scale-in snap-start ${
                   index === currentIndex ? 'ring-2 ring-accent' : ''
                 }`}
                 onClick={() => onItemClick(item)}
@@ -245,8 +278,16 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
                     ? 'bg-accent scale-125' 
                     : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
                 }`}
+                title={`Item ${index + 1} of ${featuredItems.length}`}
               />
             ))}
+          </div>
+          
+          {/* Circular Progress Indicator */}
+          <div className="flex justify-center mt-4">
+            <div className="text-sm text-muted-foreground">
+              {currentIndex + 1} of {featuredItems.length} • Auto-cycling
+            </div>
           </div>
         </div>
       </div>
