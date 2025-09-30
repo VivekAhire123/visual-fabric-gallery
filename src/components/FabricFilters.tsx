@@ -7,11 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, X, Star, Tag } from "lucide-react";
 import { useFabricItems, FabricFilters } from "@/hooks/useFabricItems";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { EnhancedFilters } from "./EnhancedFilters";
 
 export const FabricFilterSection = () => {
   const { categories, filters, updateFilters, clearFilters, fabricItems } = useFabricItems();
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState(filters.searchQuery || "");
+  const isMobile = useIsMobile();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -23,17 +26,20 @@ export const FabricFilterSection = () => {
   };
 
   const getActiveFilterCount = () => {
-    return Object.keys(filters).filter(key => 
-      filters[key as keyof FabricFilters] !== undefined && 
-      filters[key as keyof FabricFilters] !== ""
-    ).length;
+    return Object.keys(filters).filter(key => {
+      const value = filters[key as keyof FabricFilters];
+      return value !== undefined && 
+             value !== "" && 
+             value !== "newest"; // Don't count default sort as active filter
+    }).length;
   };
 
   const topOffers = fabricItems.filter(item => item.discount > 0).slice(0, 3);
 
   return (
-    <section className="py-6 sm:py-8 px-4 sm:px-6 bg-gradient-to-br from-secondary/20 to-background">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <>
+      <section className="py-6 sm:py-8 px-4 sm:px-6 bg-gradient-to-br from-secondary/20 to-background">
+        <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Search and Filter Toggle */}
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -54,7 +60,7 @@ export const FabricFilterSection = () => {
               className="flex items-center gap-2 rounded-xl"
             >
               <Filter className="h-4 w-4" />
-              Filters
+              {isMobile ? "Advanced" : "Filters"}
               {getActiveFilterCount() > 0 && (
                 <Badge className="ml-1 bg-accent text-accent-foreground text-xs">
                   {getActiveFilterCount()}
@@ -109,60 +115,9 @@ export const FabricFilterSection = () => {
           </Button>
         </div>
 
-        {/* Advanced Filters */}
-        {showFilters && (
-          <Card className="card-gradient animate-scale-in">
-            <CardContent className="p-4 sm:p-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Price Range</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="Min ₹"
-                      value={filters.minPrice || ""}
-                      onChange={(e) => handleFilterChange("minPrice", e.target.value ? Number(e.target.value) : undefined)}
-                      className="input-boutique"
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Max ₹"
-                      value={filters.maxPrice || ""}
-                      onChange={(e) => handleFilterChange("maxPrice", e.target.value ? Number(e.target.value) : undefined)}
-                      className="input-boutique"
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Color</Label>
-                  <Input
-                    placeholder="e.g., Red, Blue"
-                    value={filters.color || ""}
-                    onChange={(e) => handleFilterChange("color", e.target.value || undefined)}
-                    className="input-boutique"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Material</Label>
-                  <Select onValueChange={(value) => handleFilterChange("material", value)}>
-                    <SelectTrigger className="input-boutique">
-                      <SelectValue placeholder="Select material" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Materials</SelectItem>
-                      <SelectItem value="silk">Silk</SelectItem>
-                      <SelectItem value="cotton">Cotton</SelectItem>
-                      <SelectItem value="linen">Linen</SelectItem>
-                      <SelectItem value="wool">Wool</SelectItem>
-                      <SelectItem value="synthetic">Synthetic</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Advanced Filters - Desktop Only */}
+        {showFilters && !isMobile && (
+          <EnhancedFilters isMobile={false} />
         )}
 
         {/* Top Offers Section */}
@@ -205,5 +160,6 @@ export const FabricFilterSection = () => {
         )}
       </div>
     </section>
+    </>
   );
 };

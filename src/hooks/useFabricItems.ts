@@ -51,6 +51,7 @@ export interface FabricFilters {
   material?: string;
   featured?: boolean;
   searchQuery?: string;
+  sortBy?: string;
 }
 
 export const useFabricItems = () => {
@@ -125,13 +126,9 @@ export const useFabricItems = () => {
         query = query.eq('category', filters.category);
       }
       
-      if (filters.minPrice !== undefined) {
-        query = query.gte('price', filters.minPrice);
-      }
-      
-      if (filters.maxPrice !== undefined) {
-        query = query.lte('price', filters.maxPrice);
-      }
+      // NOTE: Price range is applied on the effective price (after discount)
+      // at the client level to account for discounts. We therefore do not
+      // constrain by base price at the database level here.
       
       if (filters.color) {
         query = query.ilike('color', `%${filters.color}%`);
@@ -149,10 +146,46 @@ export const useFabricItems = () => {
         query = query.or(`name.ilike.%${filters.searchQuery}%,description.ilike.%${filters.searchQuery}%`);
       }
 
-      // Order by: featured first, then by discount (top offers), then by creation date
-      query = query.order('featured', { ascending: false })
-                   .order('discount', { ascending: false })
-                   .order('created_at', { ascending: false });
+      // Apply sorting based on sortBy filter
+      let willSortByEffectivePrice = false;
+      if (filters.sortBy) {
+        switch (filters.sortBy) {
+          case 'newest':
+            query = query.order('created_at', { ascending: false });
+            break;
+          case 'oldest':
+            query = query.order('created_at', { ascending: true });
+            break;
+          case 'price-low':
+            // We'll sort by effective price on the client
+            willSortByEffectivePrice = true;
+            break;
+          case 'price-high':
+            // We'll sort by effective price on the client
+            willSortByEffectivePrice = true;
+            break;
+          case 'discount':
+            query = query.order('discount', { ascending: false });
+            break;
+          case 'popular':
+            // For now, we'll use featured as a proxy for popularity
+            // You can add a views/rating field later
+            query = query.order('featured', { ascending: false })
+                         .order('discount', { ascending: false })
+                         .order('created_at', { ascending: false });
+            break;
+          default:
+            // Default sorting: featured first, then by discount, then by creation date
+            query = query.order('featured', { ascending: false })
+                         .order('discount', { ascending: false })
+                         .order('created_at', { ascending: false });
+        }
+      } else {
+        // Default sorting when no sortBy is specified
+        query = query.order('featured', { ascending: false })
+                     .order('discount', { ascending: false })
+                     .order('created_at', { ascending: false });
+      }
 
       const { data, error } = await query;
 
@@ -162,7 +195,31 @@ export const useFabricItems = () => {
         return;
       }
 
-      setFabricItems(data || []);
+      let items = (data || []) as FabricItem[];
+
+      // Client-side filter: effective price within range
+      const hasMin = filters.minPrice !== undefined;
+      const hasMax = filters.maxPrice !== undefined;
+      if (hasMin || hasMax) {
+        items = items.filter((item) => {
+          const effectivePrice = item.price * (1 - (item.discount || 0) / 100);
+          if (hasMin && effectivePrice < (filters.minPrice as number)) return false;
+          if (hasMax && effectivePrice > (filters.maxPrice as number)) return false;
+          return true;
+        });
+      }
+
+      // Client-side sort by effective price if requested
+      if (willSortByEffectivePrice && filters.sortBy) {
+        items = items.slice().sort((a, b) => {
+          const ea = a.price * (1 - (a.discount || 0) / 100);
+          const eb = b.price * (1 - (b.discount || 0) / 100);
+          if (filters.sortBy === 'price-low') return ea - eb;
+          return eb - ea; // price-high
+        });
+      }
+
+      setFabricItems(items);
     } catch (error) {
       console.error('Error fetching fabric items:', error);
       toast.error('Failed to load fabric items');

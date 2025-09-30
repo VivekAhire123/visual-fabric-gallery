@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Instagram, Youtube, ExternalLink } from "lucide-react";
+import { Instagram, Youtube, ExternalLink, ArrowUpDown } from "lucide-react";
 import { useFabricItems, FabricItem } from "@/hooks/useFabricItems";
 
 interface FabricGalleryProps {
@@ -10,7 +10,7 @@ interface FabricGalleryProps {
 }
 
 export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
-  const { fabricItems, loading } = useFabricItems();
+  const { fabricItems, loading, filters } = useFabricItems();
 
   if (loading) {
     return (
@@ -80,6 +80,19 @@ export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
           <p className="font-elegant text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
             Tap any fabric to explore exclusive social media content
           </p>
+          {/* Sorting indicator */}
+          {filters.sortBy && filters.sortBy !== "newest" && (
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+              <Badge variant="outline" className="text-sm">
+                {filters.sortBy === "oldest" && "Oldest First"}
+                {filters.sortBy === "price-low" && "Price: Low to High"}
+                {filters.sortBy === "price-high" && "Price: High to Low"}
+                {filters.sortBy === "discount" && "Best Discount"}
+                {filters.sortBy === "popular" && "Most Popular"}
+              </Badge>
+            </div>
+          )}
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">

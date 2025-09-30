@@ -257,4 +257,54 @@
   .input-boutique {
     @apply bg-white/80 backdrop-blur-sm border-border/50 rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-300;
   }
+
+  /* Mobile-specific improvements */
+  @media (max-width: 768px) {
+    .mobile-touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    .mobile-safe-area {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .mobile-scroll-snap {
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .mobile-scroll-snap>* {
+      scroll-snap-align: start;
+    }
+  }
+
+  /* Touch-friendly interactions */
+  .touch-friendly {
+    @apply active:scale-95 transition-transform duration-150;
+  }
+
+  /* Mobile bottom navigation spacing */
+  .mobile-content {
+    padding-bottom: 80px;
+  }
+
+  /* Swipe gesture indicators */
+  .swipe-indicator {
+    position: relative;
+  }
+
+  .swipe-indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    opacity: 0.5;
+  }
 }
