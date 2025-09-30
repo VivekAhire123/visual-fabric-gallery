@@ -330,61 +330,7 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
             </div>
           </div>
 
-          {/* Uploaded Song Info - Fixed Position */}
-          {uploadedSong && (
-            <div className="fixed top-20 right-4 z-50 bg-white/95 backdrop-blur-md rounded-xl p-4 shadow-2xl border-2 border-green-200 max-w-sm animate-in slide-in-from-right duration-300 sm:block hidden">
-              {/* Close Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={removeUploadedSong}
-                className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-red-500 text-white hover:bg-red-600 shadow-lg"
-                title="Remove uploaded song"
-              >
-                ×
-              </Button>
-              
-              <div className="flex items-center gap-2 mb-3">
-                <Music className="h-5 w-5 text-green-500" />
-                <span className="text-sm font-semibold text-green-600">Your Uploaded Song</span>
-              </div>
-              
-              <div className="text-sm text-gray-800 font-medium truncate mb-1" title={uploadedSong.name}>
-                {uploadedSong.name}
-              </div>
-              
-              <div className="text-xs text-gray-600 mb-3">
-                {(uploadedSong.size / (1024 * 1024)).toFixed(1)} MB • {uploadedSong.type.split('/')[1]?.toUpperCase() || 'AUDIO'}
-              </div>
-              
-              <div className="flex gap-2 mb-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={testAudioPlayback}
-                  className="text-xs h-7 px-3 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700"
-                >
-                  🔊 Test Play
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsMusicEnabled(!isMusicEnabled)}
-                  className={`text-xs h-7 px-3 ${
-                    isMusicEnabled 
-                      ? 'bg-green-100 text-green-700 border-green-300' 
-                      : 'bg-gray-100 text-gray-600 border-gray-300'
-                  }`}
-                >
-                  {isMusicEnabled ? '🎵 ON' : '🔇 OFF'}
-                </Button>
-              </div>
-              
-              <div className="text-xs text-gray-500 bg-gray-50 rounded px-2 py-1">
-                {isMusicEnabled ? '✅ Music will play during slideshow' : '❌ Music is disabled'}
-              </div>
-            </div>
-          )}
+   
 
           {/* Mobile Song Info - Bottom Position */}
           {uploadedSong && (
