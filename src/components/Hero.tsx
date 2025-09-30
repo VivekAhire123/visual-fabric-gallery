@@ -36,9 +36,9 @@ export const Hero = () => {
             </span>
           </h1>
           
-          <p className="font-elegant text-lg sm:text-2xl lg:text-3xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed font-light">
-            Where tradition meets elegance • Premium fabric boutique experience
-          </p>
+            <p className="font-elegant text-lg sm:text-2xl lg:text-3xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed font-light">
+              જ્યાં પરંપરા ભવ્યતાને મળે છે • પ્રીમિયમ ફેબ્રિક બુટિક અનુભવ • વધુ શ્રેષ્ઠ
+            </p>
         </div>
         
         {/* Contact Information - Boutique Style */}
