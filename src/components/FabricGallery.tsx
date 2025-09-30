@@ -14,7 +14,7 @@ export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
 
   if (loading) {
     return (
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-secondary/30 to-background">
+      <section id="fabric-gallery" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-secondary/30 to-background">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16 animate-fade-in">
             <h2 className="section-header">Exquisite Collection</h2>
@@ -73,7 +73,7 @@ export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
   }
 
   return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-background via-secondary/20 to-background">
+    <section id="fabric-gallery" className="py-16 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-background via-secondary/20 to-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16 animate-fade-in">
           <h2 className="section-header">Premium Collection</h2>
