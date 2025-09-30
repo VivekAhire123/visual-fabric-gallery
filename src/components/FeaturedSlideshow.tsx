@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Play, Pause, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Pause, Star, Volume2, VolumeX, Upload, Music } from "lucide-react";
 import { useFabricItems, FabricItem } from "@/hooks/useFabricItems";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -16,8 +16,14 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMusicEnabled, setIsMusicEnabled] = useState(false);
+  const [uploadedSong, setUploadedSong] = useState<File | null>(null);
+  const [songUrl, setSongUrl] = useState<string>("");
+  const [isUploading, setIsUploading] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Get featured items or top items with discounts
   const featuredItems = React.useMemo(() => {
@@ -85,6 +91,115 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
     setIsPlaying(!isPlaying);
   };
 
+  const toggleMusic = () => {
+    setIsMusicEnabled(!isMusicEnabled);
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      const allowedTypes = ['audio/mpeg', 'audio/mp3', 'audio/ogg', 'audio/wav', 'audio/mp4'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Please upload a valid audio file (MP3, OGG, WAV, or MP4)');
+        return;
+      }
+
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert('File size must be less than 10MB');
+        return;
+      }
+
+      setIsUploading(true);
+      setUploadedSong(file);
+      
+      // Create object URL for the uploaded file
+      const url = URL.createObjectURL(file);
+      setSongUrl(url);
+      setIsUploading(false);
+      
+      // Auto-enable music when song is uploaded
+      setIsMusicEnabled(true);
+    }
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removeUploadedSong = () => {
+    if (songUrl) {
+      URL.revokeObjectURL(songUrl);
+    }
+    setUploadedSong(null);
+    setSongUrl("");
+    setIsMusicEnabled(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const testAudioPlayback = () => {
+    if (audioRef.current && songUrl) {
+      console.log('Testing audio playback...');
+      audioRef.current.volume = 0.5; // Higher volume for testing
+      audioRef.current.play().then(() => {
+        console.log('Audio started playing');
+      }).catch((error) => {
+        console.error('Audio play failed:', error);
+      });
+    } else {
+      console.log('No audio source available');
+    }
+  };
+
+  // Update audio source when song changes
+  useEffect(() => {
+    if (audioRef.current && songUrl) {
+      // Load the new audio source
+      audioRef.current.load();
+    }
+  }, [songUrl]);
+
+  // Music control effect
+  useEffect(() => {
+    if (audioRef.current) {
+      // Set volume to 50% for better audibility
+      audioRef.current.volume = 0.5;
+      
+      if (isMusicEnabled && isPlaying && songUrl) {
+        // Add a small delay to ensure audio is loaded
+        setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.play().catch((error) => {
+              console.error('Audio playback failed:', error);
+              // Show user-friendly error message
+              alert('Audio playback failed. Please try uploading a different audio file.');
+              // Try to play again after a short delay
+              setTimeout(() => {
+                if (audioRef.current) {
+                  audioRef.current.play().catch(console.error);
+                }
+              }, 500);
+            });
+          }
+        }, 200);
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isMusicEnabled, isPlaying, songUrl]);
+
+  // Stop music when component unmounts
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
   // Don't render on mobile
   if (isMobile || featuredItems.length === 0) {
     return null;
@@ -124,8 +239,60 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
             <ChevronRight className="h-5 w-5" />
           </Button>
 
-          {/* Play/Pause Button with Circular Progress */}
-          <div className="absolute top-4 right-4 z-10">
+          {/* Control Buttons */}
+          <div className="absolute top-4 right-4 z-10 flex gap-2">
+            {/* Upload Song Button */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={triggerFileUpload}
+              className={`bg-background/80 backdrop-blur-sm hover:bg-background shadow-lg transition-all duration-300 ${
+                uploadedSong ? 'ring-2 ring-green-500 bg-green-500/10' : ''
+              }`}
+              title={uploadedSong ? `Uploaded: ${uploadedSong.name}` : 'Upload your own song'}
+              disabled={isUploading}
+            >
+              {isUploading ? (
+                <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : uploadedSong ? (
+                <Music className="h-4 w-4 text-green-500" />
+              ) : (
+                <Upload className="h-4 w-4" />
+              )}
+            </Button>
+
+            {/* Music Toggle Button */}
+            <div className="relative">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleMusic}
+                className={`bg-background/80 backdrop-blur-sm hover:bg-background shadow-lg transition-all duration-300 ${
+                  isMusicEnabled ? 'ring-2 ring-accent bg-accent/10' : ''
+                }`}
+                title={isMusicEnabled ? 'Disable background music' : 'Enable background music'}
+                disabled={!uploadedSong && !songUrl}
+              >
+                {isMusicEnabled ? (
+                  <Volume2 className="h-4 w-4 text-accent" />
+                ) : (
+                  <VolumeX className="h-4 w-4" />
+                )}
+              </Button>
+              
+              {/* Animated Sound Waves */}
+              {isMusicEnabled && isPlaying && uploadedSong && (
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex gap-0.5">
+                  <div className="w-0.5 bg-accent animate-pulse" style={{ height: '4px', animationDelay: '0ms' }}></div>
+                  <div className="w-0.5 bg-accent animate-pulse" style={{ height: '6px', animationDelay: '100ms' }}></div>
+                  <div className="w-0.5 bg-accent animate-pulse" style={{ height: '4px', animationDelay: '200ms' }}></div>
+                  <div className="w-0.5 bg-accent animate-pulse" style={{ height: '8px', animationDelay: '300ms' }}></div>
+                  <div className="w-0.5 bg-accent animate-pulse" style={{ height: '4px', animationDelay: '400ms' }}></div>
+                </div>
+              )}
+            </div>
+
+            {/* Play/Pause Button with Circular Progress */}
             <div className="relative">
               {/* Circular Progress Ring */}
               <svg className="w-10 h-10 transform -rotate-90" viewBox="0 0 40 40">
@@ -162,6 +329,110 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
               </Button>
             </div>
           </div>
+
+          {/* Uploaded Song Info - Fixed Position */}
+          {uploadedSong && (
+            <div className="fixed top-20 right-4 z-50 bg-white/95 backdrop-blur-md rounded-xl p-4 shadow-2xl border-2 border-green-200 max-w-sm animate-in slide-in-from-right duration-300 sm:block hidden">
+              {/* Close Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={removeUploadedSong}
+                className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-red-500 text-white hover:bg-red-600 shadow-lg"
+                title="Remove uploaded song"
+              >
+                ×
+              </Button>
+              
+              <div className="flex items-center gap-2 mb-3">
+                <Music className="h-5 w-5 text-green-500" />
+                <span className="text-sm font-semibold text-green-600">Your Uploaded Song</span>
+              </div>
+              
+              <div className="text-sm text-gray-800 font-medium truncate mb-1" title={uploadedSong.name}>
+                {uploadedSong.name}
+              </div>
+              
+              <div className="text-xs text-gray-600 mb-3">
+                {(uploadedSong.size / (1024 * 1024)).toFixed(1)} MB • {uploadedSong.type.split('/')[1]?.toUpperCase() || 'AUDIO'}
+              </div>
+              
+              <div className="flex gap-2 mb-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={testAudioPlayback}
+                  className="text-xs h-7 px-3 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700"
+                >
+                  🔊 Test Play
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsMusicEnabled(!isMusicEnabled)}
+                  className={`text-xs h-7 px-3 ${
+                    isMusicEnabled 
+                      ? 'bg-green-100 text-green-700 border-green-300' 
+                      : 'bg-gray-100 text-gray-600 border-gray-300'
+                  }`}
+                >
+                  {isMusicEnabled ? '🎵 ON' : '🔇 OFF'}
+                </Button>
+              </div>
+              
+              <div className="text-xs text-gray-500 bg-gray-50 rounded px-2 py-1">
+                {isMusicEnabled ? '✅ Music will play during slideshow' : '❌ Music is disabled'}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Song Info - Bottom Position */}
+          {uploadedSong && (
+            <div className="fixed bottom-4 left-4 right-4 z-50 bg-white/95 backdrop-blur-md rounded-xl p-3 shadow-2xl border-2 border-green-200 sm:hidden block animate-in slide-in-from-bottom duration-300">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Music className="h-4 w-4 text-green-500" />
+                  <span className="text-sm font-semibold text-green-600">Your Song</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={removeUploadedSong}
+                  className="h-6 w-6 rounded-full bg-red-500 text-white hover:bg-red-600"
+                  title="Remove uploaded song"
+                >
+                  ×
+                </Button>
+              </div>
+              
+              <div className="text-xs text-gray-800 font-medium truncate mb-2" title={uploadedSong.name}>
+                {uploadedSong.name}
+              </div>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={testAudioPlayback}
+                  className="text-xs h-6 px-2 bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 flex-1"
+                >
+                  🔊 Test
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsMusicEnabled(!isMusicEnabled)}
+                  className={`text-xs h-6 px-2 flex-1 ${
+                    isMusicEnabled 
+                      ? 'bg-green-100 text-green-700 border-green-300' 
+                      : 'bg-gray-100 text-gray-600 border-gray-300'
+                  }`}
+                >
+                  {isMusicEnabled ? '🎵 ON' : '🔇 OFF'}
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Slideshow Items - Show 3 items at a time */}
           <div className="relative overflow-hidden">
@@ -306,6 +577,42 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
           </div>
         </div>
       </div>
+
+      {/* Hidden File Input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="audio/*"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
+
+      {/* Background Music Audio Element */}
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        className="hidden"
+        onLoadedData={() => {
+          console.log('Audio loaded successfully');
+        }}
+        onError={(e) => {
+          console.error('Audio loading error:', e);
+        }}
+        onCanPlay={() => {
+          console.log('Audio can play');
+        }}
+      >
+        {songUrl ? (
+          <source src={songUrl} type={uploadedSong?.type || "audio/mpeg"} />
+        ) : (
+          <>
+            <source src="/audio/background-music.mp3" type="audio/mpeg" />
+            <source src="/audio/background-music.ogg" type="audio/ogg" />
+          </>
+        )}
+        Your browser does not support the audio element.
+      </audio>
     </section>
   );
 };
