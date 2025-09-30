@@ -6,7 +6,6 @@ import { FestivalBanners } from "@/components/FestivalBanners";
 import { FabricFilterSection } from "@/components/FabricFilters";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { EnhancedFilters } from "@/components/EnhancedFilters";
-import { MobileImageGallery } from "@/components/MobileImageGallery";
 import { FabricItem } from "@/hooks/useFabricItems";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -17,16 +16,12 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const Index = () => {
   const [selectedItem, setSelectedItem] = useState<FabricItem | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [showMobileGallery, setShowMobileGallery] = useState(false);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const { isAdmin } = useAuth();
   const isMobile = useIsMobile();
 
   const handleItemClick = (item: FabricItem) => {
     setSelectedItem(item);
-    if (isMobile) {
-      setShowMobileGallery(true);
-    }
   };
 
   const handleFavorite = (item: FabricItem) => {
@@ -65,25 +60,11 @@ const Index = () => {
         onItemClick={handleItemClick}
       />
 
-      {/* Desktop Modal */}
-      {selectedItem && !isMobile && (
+      {/* Social Media Modal - Both Desktop and Mobile */}
+      {selectedItem && (
         <SocialMediaModal
           item={selectedItem}
           onClose={() => setSelectedItem(null)}
-        />
-      )}
-
-      {/* Mobile Image Gallery */}
-      {selectedItem && isMobile && showMobileGallery && (
-        <MobileImageGallery
-          item={selectedItem}
-          onClose={() => {
-            setShowMobileGallery(false);
-            setSelectedItem(null);
-          }}
-          onFavorite={handleFavorite}
-          onShare={handleShare}
-          isFavorite={favorites.has(selectedItem.id)}
         />
       )}
 

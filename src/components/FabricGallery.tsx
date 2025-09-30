@@ -120,14 +120,15 @@ export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
                   {item.description}
                 </p>
                 
-                <div className="flex items-center justify-between mb-4">
+                {/* Price and Discount */}
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl font-bold text-primary font-serif">
+                    <span className="text-lg sm:text-xl font-bold text-primary font-serif">
                       ₹{item.discount > 0 ? (item.price * (1 - item.discount / 100)).toFixed(2) : item.price.toFixed(2)}
                     </span>
                     {item.discount > 0 && (
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground line-through font-light">
+                        <span className="text-xs sm:text-sm text-muted-foreground line-through font-light">
                           ₹{item.price.toFixed(2)}
                         </span>
                         <span className="text-xs bg-gradient-to-r from-red-500 to-red-600 text-white px-2 py-1 rounded-full font-medium">
@@ -136,6 +137,41 @@ export const FabricGallery = ({ onItemClick }: FabricGalleryProps) => {
                       </div>
                     )}
                   </div>
+                </div>
+
+                {/* Product Details */}
+                <div className="space-y-2 mb-4">
+                  {/* Color */}
+                  {item.color && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs sm:text-sm text-muted-foreground font-medium">Color:</span>
+                      <span className="text-xs sm:text-sm font-semibold text-primary">{item.color}</span>
+                    </div>
+                  )}
+                  
+                  {/* Stock Quantity */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs sm:text-sm text-muted-foreground font-medium">Stock:</span>
+                    <span className={`text-xs sm:text-sm font-semibold ${item.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {item.stock_quantity > 0 ? `${item.stock_quantity} available` : 'Out of stock'}
+                    </span>
+                  </div>
+
+                  {/* Material */}
+                  {item.material && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs sm:text-sm text-muted-foreground font-medium">Material:</span>
+                      <span className="text-xs sm:text-sm font-semibold text-primary">{item.material}</span>
+                    </div>
+                  )}
+
+                  {/* Pattern */}
+                  {item.pattern && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs sm:text-sm text-muted-foreground font-medium">Pattern:</span>
+                      <span className="text-xs sm:text-sm font-semibold text-primary">{item.pattern}</span>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
