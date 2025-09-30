@@ -39,7 +39,7 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
         setCurrentIndex((prevIndex) => 
           (prevIndex + 1) % featuredItems.length
         );
-      }, 2500); // Change slide every 3 seconds
+      }, 2000); // Change slide every 2 seconds
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -54,12 +54,13 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
     };
   }, [isPlaying, isHovered, featuredItems.length]);
 
-  // Scroll to show one complete item at a time
+  // Scroll to show 3 items with center item highlighted
   useEffect(() => {
     if (scrollContainerRef.current && featuredItems.length > 0) {
       const container = scrollContainerRef.current;
       const itemWidth = 320 + 24; // Item width + gap (w-80 + gap-6)
-      const scrollPosition = currentIndex * itemWidth;
+      // Center the current item (show 1 item before, current item, 1 item after)
+      const scrollPosition = Math.max(0, (currentIndex - 1) * itemWidth);
       
       container.scrollTo({
         left: scrollPosition,
@@ -162,23 +163,28 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
             </div>
           </div>
 
-          {/* Slideshow Items */}
-          <div
-            ref={scrollContainerRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-            style={{ 
-              scrollbarWidth: 'none', 
-              msOverflowStyle: 'none',
-              scrollBehavior: 'smooth'
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
+          {/* Slideshow Items - Show 3 items at a time */}
+          <div className="relative overflow-hidden">
+            <div
+              ref={scrollContainerRef}
+              className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+              style={{ 
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none',
+                scrollBehavior: 'smooth'
+              }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
             {featuredItems.map((item, index) => (
               <Card
                 key={item.id}
-                className={`flex-shrink-0 w-80 cursor-pointer hover-lift group overflow-hidden animate-scale-in snap-start ${
-                  index === currentIndex ? 'ring-2 ring-accent' : ''
+                className={`flex-shrink-0 w-80 cursor-pointer hover-lift group overflow-hidden animate-scale-in snap-start transition-all duration-500 ${
+                  index === currentIndex 
+                    ? 'ring-4 ring-accent scale-105 shadow-2xl bg-gradient-to-br from-accent/5 to-primary/5' 
+                    : index === currentIndex - 1 || index === currentIndex + 1
+                    ? 'ring-1 ring-muted-foreground/30 scale-95 opacity-80'
+                    : 'opacity-50 scale-90'
                 }`}
                 onClick={() => onItemClick(item)}
                 style={{ animationDelay: `${index * 100}ms` }}
@@ -210,12 +216,16 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
                   )}
                 </div>
                 
-                <CardContent className="p-6 space-y-4">
+                <CardContent className={`p-6 space-y-4 ${index === currentIndex ? 'bg-gradient-to-br from-accent/10 to-primary/10' : ''}`}>
                   <div>
-                    <h3 className="font-serif font-semibold text-xl mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className={`font-serif font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-1 ${
+                      index === currentIndex ? 'text-2xl text-accent' : 'text-xl'
+                    }`}>
                       {item.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2 font-light leading-relaxed">
+                    <p className={`mb-4 line-clamp-2 font-light leading-relaxed ${
+                      index === currentIndex ? 'text-base text-foreground' : 'text-sm text-muted-foreground'
+                    }`}>
                       {item.description}
                     </p>
                   </div>
@@ -223,12 +233,16 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
                   {/* Price and Discount */}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl font-bold text-primary font-serif">
+                      <span className={`font-bold text-primary font-serif ${
+                        index === currentIndex ? 'text-3xl' : 'text-2xl'
+                      }`}>
                         ₹{item.discount > 0 ? (item.price * (1 - item.discount / 100)).toFixed(2) : item.price.toFixed(2)}
                       </span>
                       {item.discount > 0 && (
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground line-through font-light">
+                          <span className={`text-muted-foreground line-through font-light ${
+                            index === currentIndex ? 'text-base' : 'text-sm'
+                          }`}>
                             ₹{item.price.toFixed(2)}
                           </span>
                         </div>
@@ -265,6 +279,7 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
 
           {/* Dots Indicator */}
@@ -286,7 +301,7 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
           {/* Circular Progress Indicator */}
           <div className="flex justify-center mt-4">
             <div className="text-sm text-muted-foreground">
-              {currentIndex + 1} of {featuredItems.length} • Auto-cycling
+              {currentIndex + 1} of {featuredItems.length} • Auto-cycling every 2s
             </div>
           </div>
         </div>
