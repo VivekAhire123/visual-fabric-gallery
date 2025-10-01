@@ -77,9 +77,9 @@ const Auth = () => {
       <div className="flex-1 flex items-center justify-center px-4">
         <Card className="w-full max-w-md card-gradient">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-serif gradient-text">
-              Admin Access
-            </CardTitle>
+            <h1 className="text-2xl font-serif gradient-text">
+              Admin Access - Tata Matching Center
+            </h1>
             <p className="text-muted-foreground">
               Sign in to manage your fabric collection
             </p>
