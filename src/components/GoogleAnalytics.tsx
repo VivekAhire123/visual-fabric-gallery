@@ -10,7 +10,7 @@ declare global {
 export const GoogleAnalytics = () => {
   useEffect(() => {
     // Google Analytics 4 (GA4) tracking code
-    const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Replace with your actual GA4 tracking ID
+    const GA_TRACKING_ID = 'G-PWL91VH3PZ'; // Google Analytics 4 tracking ID
     
     // Load Google Analytics script
     const script = document.createElement('script');
