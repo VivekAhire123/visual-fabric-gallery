@@ -7,6 +7,7 @@ import { FabricFilterSection } from "@/components/FabricFilters";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { EnhancedFilters } from "@/components/EnhancedFilters";
 import { FeaturedSlideshow } from "@/components/FeaturedSlideshow";
+import { SEOContent } from "@/components/SEOContent";
 import { FabricItem } from "@/hooks/useFabricItems";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -64,6 +65,9 @@ const Index = () => {
       <FabricGallery 
         onItemClick={handleItemClick}
       />
+
+      {/* SEO Content Section */}
+      <SEOContent />
 
       {/* Social Media Modal - Both Desktop and Mobile */}
       {selectedItem && (

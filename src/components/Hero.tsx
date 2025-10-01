@@ -36,9 +36,13 @@ export const Hero = () => {
             </span>
           </h1>
           
-            <p className="font-elegant text-lg sm:text-2xl lg:text-3xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed font-light">
-              જ્યાં પરંપરા ભવ્યતાને મળે છે • પ્રીમિયમ ફેબ્રિક બુટિક અનુભવ • વધુ શ્રેષ્ઠ
-            </p>
+          <p className="font-elegant text-lg sm:text-2xl lg:text-3xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed font-light">
+            Best Fabric Shop in Bilimora • Premier Kapad Dukan • Astar Dukaan • Designer Fabrics Collection
+          </p>
+          
+          <p className="font-elegant text-base sm:text-lg lg:text-xl mb-8 text-white/80 max-w-3xl mx-auto leading-relaxed font-light">
+            જ્યાં પરંપરા ભવ્યતાને મળે છે • પ્રીમિયમ ફેબ્રિક બુટિક અનુભવ • વધુ શ્રેષ્ઠ
+          </p>
         </div>
         
         {/* Contact Information - Boutique Style */}
@@ -94,7 +98,7 @@ export const Hero = () => {
                 </div>
                 <div className="text-center sm:text-left">
                   <span className="text-accent font-serif font-medium text-sm block">Boutique</span>
-                  <span className="text-white font-medium text-lg">Premium Fabric Collection</span>
+                  <span className="text-white font-medium text-lg">Best Fabric Shop in Bilimora</span>
                 </div>
               </div>
             </div>
