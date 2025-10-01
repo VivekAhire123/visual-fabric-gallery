@@ -56,8 +56,8 @@ export const SEO_CONFIG = {
 
   // Meta Information
   meta: {
-    title: 'Tata Matching Center - Best Fabric Shop in Bilimora | Kapad Dukan | Astar Dukaan',
-    description: 'Tata Matching Center is Bilimora\'s premier fabric shop offering premium kapad, astar, and textile collection. Best fabric matching center near Bilimora with wholesale and retail services. Visit our kapad dukan for designer fabrics, wedding fabrics, and party wear materials.',
+    title: 'Tata Matching Center - Best Fabric Shop in Bilimora',
+    description: 'Premier fabric shop in Bilimora offering premium kapad, astar, and textile collection. Best fabric matching center with wholesale and retail services.',
     keywords: 'tata matching center, bilimora fabric shop, kapad dukan bilimora, astar dukaan bilimora, best fabric in bilimora, fabric matching center, bilimora textile shop, kapad wholesale bilimora, designer fabric bilimora, wedding fabric bilimora, party wear fabric bilimora, fabric dealer bilimora, textile dealer bilimora, bilimora fabric market, kapad store bilimora',
     author: 'Tata Matching Center',
     robots: 'index, follow',
@@ -98,8 +98,8 @@ export const SEO_CONFIG = {
   business: {
     name: 'Tata Matching Center',
     description: 'Premier fabric shop in Bilimora offering premium kapad, astar, and textile collection',
-    url: 'https://tatamatchingcenter.com',
-    telephone: '+91-XXXXXXXXXX',
+    url: 'https://tata-matching-center.vercel.app',
+    telephone: '+91-7490836570',
     address: {
       streetAddress: 'Bilimora',
       addressLocality: 'Bilimora',
@@ -119,9 +119,8 @@ export const SEO_CONFIG = {
     priceRange: '$$',
     servedArea: 'Bilimora',
     socialMedia: [
-      'https://www.instagram.com/tatamatchingcenter',
-      'https://www.pinterest.com/tatamatchingcenter',
-      'https://www.youtube.com/@tatamatchingcenter'
+      'https://www.instagram.com/tata_matching_center/',
+      'https://in.pinterest.com/tatamatchingcenter/',
     ]
   },
 
