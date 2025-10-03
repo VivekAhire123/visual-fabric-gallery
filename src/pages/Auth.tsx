@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageSEO } from '@/components/PageSEO';
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -62,7 +63,13 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex flex-col">
+    <>
+      <PageSEO 
+        title="Admin Login - Tata Matching Center"
+        description="Secure login portal for Tata Matching Center administrative access. Authorized personnel only."
+        noindex={true}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex flex-col">
       {/* Header */}
       <header className="p-4">
         <Button variant="ghost" asChild>
@@ -140,6 +147,7 @@ const Auth = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 

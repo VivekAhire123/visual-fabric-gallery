@@ -3,6 +3,7 @@ import { FabricUpload } from "@/components/FabricUpload";
 import { BannerManagement } from "@/components/BannerManagement";
 import { CollectionManagement } from "@/components/CollectionManagement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { PageSEO } from "@/components/PageSEO";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Upload, Settings, LogOut, Package } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -26,6 +27,11 @@ const Admin = () => {
 
   return (
     <ProtectedRoute requireAdmin={true}>
+      <PageSEO 
+        title="Admin Panel - Tata Matching Center"
+        description="Administrative panel for managing fabric collection, banners, and content. Access restricted to authorized personnel only."
+        noindex={true}
+      />
       <div className="min-h-screen bg-background">
         {/* Header */}
         <header className="border-b bg-card">
