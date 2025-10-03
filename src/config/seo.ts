@@ -220,7 +220,7 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                 '@type': 'Product',
                 name: 'Designer Fabrics',
                 description: 'Premium designer fabrics for special occasions',
-                image: 'https://tata-matching-center.vercel.app/placeholder.svg',
+                image: 'https://tata-matching-center.vercel.app/designer-fabrics.jpg',
                 offers: {
                   '@type': 'Offer',
                 price: '500',
@@ -261,7 +261,7 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                 '@type': 'Product',
                 name: 'Wedding Fabrics',
                 description: 'Elegant wedding fabrics for bridal wear',
-                image: 'https://tata-matching-center.vercel.app/placeholder.svg',
+                image: 'https://tata-matching-center.vercel.app/wedding-fabrics.jpg',
                 offers: {
                   '@type': 'Offer',
                 price: '800',
@@ -302,7 +302,7 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                 '@type': 'Product',
                 name: 'Party Wear Fabrics',
                 description: 'Stylish party wear fabrics for celebrations',
-                image: 'https://tata-matching-center.vercel.app/placeholder.svg',
+                image: 'https://tata-matching-center.vercel.app/party-wear-fabrics.jpg',
                 offers: {
                   '@type': 'Offer',
                 price: '600',
