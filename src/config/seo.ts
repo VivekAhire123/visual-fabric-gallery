@@ -218,21 +218,54 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
               '@type': 'Offer',
               itemOffered: {
                 '@type': 'Product',
-                name: 'Designer Fabrics'
+                name: 'Designer Fabrics',
+                description: 'Premium designer fabrics for special occasions',
+                offers: {
+                  '@type': 'Offer',
+                  price: '500',
+                  priceCurrency: 'INR',
+                  availability: 'https://schema.org/InStock',
+                  seller: {
+                    '@type': 'LocalBusiness',
+                    name: 'Tata Matching Center'
+                  }
+                }
               }
             },
             {
               '@type': 'Offer',
               itemOffered: {
                 '@type': 'Product',
-                name: 'Wedding Fabrics'
+                name: 'Wedding Fabrics',
+                description: 'Elegant wedding fabrics for bridal wear',
+                offers: {
+                  '@type': 'Offer',
+                  price: '800',
+                  priceCurrency: 'INR',
+                  availability: 'https://schema.org/InStock',
+                  seller: {
+                    '@type': 'LocalBusiness',
+                    name: 'Tata Matching Center'
+                  }
+                }
               }
             },
             {
               '@type': 'Offer',
               itemOffered: {
                 '@type': 'Product',
-                name: 'Party Wear Fabrics'
+                name: 'Party Wear Fabrics',
+                description: 'Stylish party wear fabrics for celebrations',
+                offers: {
+                  '@type': 'Offer',
+                  price: '600',
+                  priceCurrency: 'INR',
+                  availability: 'https://schema.org/InStock',
+                  seller: {
+                    '@type': 'LocalBusiness',
+                    name: 'Tata Matching Center'
+                  }
+                }
               }
             }
           ]
