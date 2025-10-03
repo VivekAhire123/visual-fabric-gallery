@@ -116,11 +116,11 @@ export const SEO_CONFIG = {
       opens: '09:00',
       closes: '19:00'
     },
-    priceRange: '$$',
+    priceRange: '₹',
     servedArea: 'Bilimora',
     socialMedia: [
-      'https://www.instagram.com/tatamatchingcenter',
-      'https://www.pinterest.com/tatamatchingcenter',
+      'https://www.instagram.com/tata_matching_center/',
+      'https://in.pinterest.com/tatamatchingcenter/',
       'https://www.youtube.com/@tatamatchingcenter'
     ]
   },
@@ -220,15 +220,38 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                 '@type': 'Product',
                 name: 'Designer Fabrics',
                 description: 'Premium designer fabrics for special occasions',
+                image: 'https://tata-matching-center.vercel.app/placeholder.svg',
                 offers: {
                   '@type': 'Offer',
-                  price: '500',
-                  priceCurrency: 'INR',
-                  availability: 'https://schema.org/InStock',
-                  seller: {
-                    '@type': 'LocalBusiness',
-                    name: 'Tata Matching Center'
+                price: '500',
+                priceCurrency: 'INR',
+                availability: 'https://schema.org/InStock',
+                shippingDetails: {
+                  '@type': 'OfferShippingDetails',
+                  shippingRate: {
+                    '@type': 'MonetaryAmount',
+                    value: '0',
+                    currency: 'INR'
+                  },
+                  deliveryTime: {
+                    '@type': 'ShippingDeliveryTime',
+                    businessDays: {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    }
                   }
+                },
+                hasMerchantReturnPolicy: {
+                  '@type': 'MerchantReturnPolicy',
+                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                  merchantReturnDays: 7,
+                  returnMethod: 'https://schema.org/ReturnByMail',
+                  returnFees: 'https://schema.org/FreeReturn'
+                },
+                seller: {
+                  '@type': 'LocalBusiness',
+                  name: 'Tata Matching Center'
+                }
                 }
               }
             },
@@ -238,15 +261,38 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                 '@type': 'Product',
                 name: 'Wedding Fabrics',
                 description: 'Elegant wedding fabrics for bridal wear',
+                image: 'https://tata-matching-center.vercel.app/placeholder.svg',
                 offers: {
                   '@type': 'Offer',
-                  price: '800',
-                  priceCurrency: 'INR',
-                  availability: 'https://schema.org/InStock',
-                  seller: {
-                    '@type': 'LocalBusiness',
-                    name: 'Tata Matching Center'
+                price: '800',
+                priceCurrency: 'INR',
+                availability: 'https://schema.org/InStock',
+                shippingDetails: {
+                  '@type': 'OfferShippingDetails',
+                  shippingRate: {
+                    '@type': 'MonetaryAmount',
+                    value: '0',
+                    currency: 'INR'
+                  },
+                  deliveryTime: {
+                    '@type': 'ShippingDeliveryTime',
+                    businessDays: {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    }
                   }
+                },
+                hasMerchantReturnPolicy: {
+                  '@type': 'MerchantReturnPolicy',
+                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                  merchantReturnDays: 7,
+                  returnMethod: 'https://schema.org/ReturnByMail',
+                  returnFees: 'https://schema.org/FreeReturn'
+                },
+                seller: {
+                  '@type': 'LocalBusiness',
+                  name: 'Tata Matching Center'
+                }
                 }
               }
             },
@@ -256,15 +302,38 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                 '@type': 'Product',
                 name: 'Party Wear Fabrics',
                 description: 'Stylish party wear fabrics for celebrations',
+                image: 'https://tata-matching-center.vercel.app/placeholder.svg',
                 offers: {
                   '@type': 'Offer',
-                  price: '600',
-                  priceCurrency: 'INR',
-                  availability: 'https://schema.org/InStock',
-                  seller: {
-                    '@type': 'LocalBusiness',
-                    name: 'Tata Matching Center'
+                price: '600',
+                priceCurrency: 'INR',
+                availability: 'https://schema.org/InStock',
+                shippingDetails: {
+                  '@type': 'OfferShippingDetails',
+                  shippingRate: {
+                    '@type': 'MonetaryAmount',
+                    value: '0',
+                    currency: 'INR'
+                  },
+                  deliveryTime: {
+                    '@type': 'ShippingDeliveryTime',
+                    businessDays: {
+                      '@type': 'OpeningHoursSpecification',
+                      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    }
                   }
+                },
+                hasMerchantReturnPolicy: {
+                  '@type': 'MerchantReturnPolicy',
+                  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                  merchantReturnDays: 7,
+                  returnMethod: 'https://schema.org/ReturnByMail',
+                  returnFees: 'https://schema.org/FreeReturn'
+                },
+                seller: {
+                  '@type': 'LocalBusiness',
+                  name: 'Tata Matching Center'
+                }
                 }
               }
             }
