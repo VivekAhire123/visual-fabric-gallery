@@ -14,7 +14,7 @@
 
   <!-- Main Pages -->
   <url>
-    <loc>https://tata-matching-center.vercel.app/fabrics</loc>
+    <loc>https://tata-matching-center.vercel.app/cotton</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -24,43 +24,14 @@
     <loc>https://tata-matching-center.vercel.app/designer-fabrics</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://tata-matching-center.vercel.app/wedding-fabrics</loc>
+    <loc>https://tata-matching-center.vercel.app/festival-collection</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/party-wear-fabrics</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/wholesale-fabrics</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Service Pages -->
-  <url>
-    <loc>https://tata-matching-center.vercel.app/fabric-matching-service</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/custom-fabric-design</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>
 
   <!-- Location Pages -->
@@ -76,64 +47,6 @@
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/astar-dukaan-bilimora</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Information Pages -->
-  <url>
-    <loc>https://tata-matching-center.vercel.app/about-us</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/contact-us</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/fabric-care-guide</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <!-- Blog/Content Pages -->
-  <url>
-    <loc>https://tata-matching-center.vercel.app/blog/best-fabric-shops-bilimora</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/blog/wedding-fabric-selection-guide</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/blog/how-to-choose-perfect-fabric</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://tata-matching-center.vercel.app/blog/fabric-matching-tips</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
 
 </urlset>
