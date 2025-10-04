@@ -276,7 +276,23 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                     businessDays: {
                       '@type': 'OpeningHoursSpecification',
                       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    },
+                    handlingTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 2,
+                      unitCode: 'DAY'
+                    },
+                    transitTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 2,
+                      maxValue: 5,
+                      unitCode: 'DAY'
                     }
+                  },
+                  shippingDestination: {
+                    '@type': 'DefinedRegion',
+                    addressCountry: 'IN'
                   }
                 },
                 hasMerchantReturnPolicy: {
@@ -284,7 +300,8 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                   returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
                   merchantReturnDays: 7,
                   returnMethod: 'https://schema.org/ReturnByMail',
-                  returnFees: 'https://schema.org/FreeReturn'
+                  returnFees: 'https://schema.org/FreeReturn',
+                  applicableCountry: 'IN'
                 },
                 seller: {
                   '@type': 'LocalBusiness',
@@ -355,7 +372,23 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                     businessDays: {
                       '@type': 'OpeningHoursSpecification',
                       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    },
+                    handlingTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 2,
+                      unitCode: 'DAY'
+                    },
+                    transitTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 2,
+                      maxValue: 5,
+                      unitCode: 'DAY'
                     }
+                  },
+                  shippingDestination: {
+                    '@type': 'DefinedRegion',
+                    addressCountry: 'IN'
                   }
                 },
                 hasMerchantReturnPolicy: {
@@ -363,7 +396,8 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                   returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
                   merchantReturnDays: 7,
                   returnMethod: 'https://schema.org/ReturnByMail',
-                  returnFees: 'https://schema.org/FreeReturn'
+                  returnFees: 'https://schema.org/FreeReturn',
+                  applicableCountry: 'IN'
                 },
                 seller: {
                   '@type': 'LocalBusiness',
@@ -434,7 +468,23 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                     businessDays: {
                       '@type': 'OpeningHoursSpecification',
                       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    },
+                    handlingTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 1,
+                      maxValue: 2,
+                      unitCode: 'DAY'
+                    },
+                    transitTime: {
+                      '@type': 'QuantitativeValue',
+                      minValue: 2,
+                      maxValue: 5,
+                      unitCode: 'DAY'
                     }
+                  },
+                  shippingDestination: {
+                    '@type': 'DefinedRegion',
+                    addressCountry: 'IN'
                   }
                 },
                 hasMerchantReturnPolicy: {
@@ -442,7 +492,8 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
                   returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
                   merchantReturnDays: 7,
                   returnMethod: 'https://schema.org/ReturnByMail',
-                  returnFees: 'https://schema.org/FreeReturn'
+                  returnFees: 'https://schema.org/FreeReturn',
+                  applicableCountry: 'IN'
                 },
                 seller: {
                   '@type': 'LocalBusiness',
@@ -466,7 +517,40 @@ export const generateStructuredData = (pageType: 'homepage' | 'service' | 'produ
       return {
         '@context': 'https://schema.org',
         '@type': 'Product',
-        ...additionalData
+        ...additionalData,
+        offers: {
+          '@type': 'Offer',
+          price: additionalData?.price || '500',
+          priceCurrency: 'INR',
+          availability: 'https://schema.org/InStock',
+          priceValidUntil: '2025-12-31',
+          shippingDetails: {
+            '@type': 'OfferShippingDetails',
+            shippingRate: {
+              '@type': 'MonetaryAmount',
+              value: '0',
+              currency: 'INR'
+            },
+            deliveryTime: {
+              '@type': 'ShippingDeliveryTime',
+              businessDays: {
+                '@type': 'OpeningHoursSpecification',
+                dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+              }
+            }
+          },
+          hasMerchantReturnPolicy: {
+            '@type': 'MerchantReturnPolicy',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            merchantReturnDays: 7,
+            returnMethod: 'https://schema.org/ReturnByMail',
+            returnFees: 'https://schema.org/FreeReturn'
+          },
+          seller: {
+            '@type': 'LocalBusiness',
+            name: 'Tata Matching Center'
+          }
+        }
       };
     
     case 'article':
