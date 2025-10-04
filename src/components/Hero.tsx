@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, MessageCircle, MapPin } from "lucide-react";
+import { ShoppingBag, MessageCircle, MapPin, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/homepage.jpg";
 import shopBackground from "@/assets/homepage.jpg";
@@ -102,6 +102,40 @@ export const Hero = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Social Media Links */}
+        <div className="bg-black/20 backdrop-blur-lg rounded-3xl p-6 sm:p-8 mb-8 sm:mb-10 border border-white/10 shadow-boutique">
+          <h3 className="text-accent font-serif font-medium text-lg mb-4 text-center">Follow Us</h3>
+          <div className="flex justify-center gap-6">
+            <a 
+              href="https://www.instagram.com/tata_matching_center/?hl=en" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Follow us on Instagram"
+              className="group flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-300"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center group-hover:shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300">
+                <Instagram className="w-8 h-8 text-white" />
+              </div>
+              <span className="text-white text-sm font-medium">Instagram</span>
+            </a>
+            
+            <a 
+              href="https://in.pinterest.com/tatamatchingcenter/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Follow us on Pinterest"
+              className="group flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-300"
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center group-hover:shadow-lg group-hover:shadow-red-500/25 transition-all duration-300">
+                <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 19c-.721 0-1.418-.109-2.073-.312.286-.465.713-1.233.713-1.233.389.233.744.373 1.25.373 1.641 0 2.828-1.5 2.828-3.5 0-1.5-1.25-2.5-2.5-2.5-1.5 0-2.5 1-2.5 2.5 0 .5.25 1 .5 1.25.25.5.25.75.25 1.25 0 .5-.25 1-.5 1.25-.25.5-.5.75-.5 1.25 0 1.5 1.25 2.5 2.5 2.5 1.5 0 2.5-1 2.5-2.5 0-.5-.25-1-.5-1.25-.25-.5-.25-.75-.25-1.25 0-.5.25-1 .5-1.25.25-.5.5-.75.5-1.25 0-1.5-1.25-2.5-2.5-2.5z"/>
+                </svg>
+              </div>
+              <span className="text-white text-sm font-medium">Pinterest</span>
+            </a>
           </div>
         </div>
         

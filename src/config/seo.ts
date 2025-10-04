@@ -119,7 +119,7 @@ export const SEO_CONFIG = {
     priceRange: '₹',
     servedArea: 'Bilimora',
     socialMedia: [
-      'https://www.instagram.com/tata_matching_center/',
+      'https://www.instagram.com/tata_matching_center/?hl=en',
       'https://in.pinterest.com/tatamatchingcenter/',
       'https://www.youtube.com/@tatamatchingcenter'
     ]
