@@ -489,7 +489,7 @@ export const FeaturedSlideshow = ({ onItemClick }: FeaturedSlideshowProps) => {
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-muted-foreground font-medium">Stock:</span>
                       <span className={`text-sm font-semibold ${item.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {item.stock_quantity > 0 ? `${item.stock_quantity} available` : 'Out of stock'}
+                        {item.stock_quantity > 0 ? `${item.stock_quantity} mtr available` : 'Out of stock'}
                       </span>
                     </div>
                   </div>

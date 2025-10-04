@@ -122,7 +122,7 @@ export const MobileImageGallery = ({
               <div className="flex items-center gap-2">
                 <span className="text-white/70 text-xs font-medium">Stock:</span>
                 <span className={`text-xs font-semibold ${item.stock_quantity > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {item.stock_quantity > 0 ? `${item.stock_quantity} available` : 'Out of stock'}
+                  {item.stock_quantity > 0 ? `${item.stock_quantity} mtr available` : 'Out of stock'}
                 </span>
               </div>
 
