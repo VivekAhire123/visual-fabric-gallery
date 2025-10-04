@@ -30,6 +30,10 @@ export const SEO_CONFIG = {
   // Long-tail Keywords
   longTailKeywords: [
     'best fabric shop near bilimora station',
+    'best fabric shop in bilimora',
+    'Kapad dukan bilimora',
+    'Astar dukaan bilimora',
+    'Kapad bazaar bilimora',
     'kapad dukan bilimora gujarat',
     'fabric matching center bilimora',
     'wholesale fabric bilimora',
@@ -40,18 +44,21 @@ export const SEO_CONFIG = {
     'fabric shop bilimora gujarat',
     'textile market bilimora',
     'kapad wholesale dealer bilimora',
-    'fabric matching service bilimora'
+    'fabric matching service bilimora',
+    'Gujrat kapad dukan bilimora',
+    'Surat Kapad shop',
+    'wholesale kapada surat'
   ],
 
   // Gujarati/Hindi Keywords
   gujaratiKeywords: [
-    'બિલિમોરા કપડા દુકાન',
-    'બિલિમોરા ફેબ્રિક સ્ટોર',
-    'કપડા મિલાન કેન્દ્ર બિલિમોરા',
-    'બિલિમોરા કપડા બજાર',
-    'કપડા ડીલર બિલિમોરા',
-    'બિલિમોરા ટેક્સટાઇલ શોપ',
-    'કપડા વ્હોલસેલ બિલિમોરા'
+    'બીલીમોરા કપડા દુકાન',
+    'બીલીમોરા ફેબ્રિક સ્ટોર',
+    'કપડા મિલાન કેન્દ્ર બીલીમોરા',
+    'બીલીમોરા કપડા બજાર',
+    'કપડા ડીલર બીલીમોરા',
+    'બીલીમોરા ટેક્સટાઇલ શોપ',
+    'કપડા વ્હોલસેલ બીલીમોરા'
   ],
 
   // Meta Information

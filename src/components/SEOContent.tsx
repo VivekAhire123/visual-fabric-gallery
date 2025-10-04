@@ -101,7 +101,28 @@ export const SEOContent = () => {
                   <p className="text-muted-foreground mb-4">
                     Located in the heart of Bilimora, our fabric shop offers 
                     the best collection of kapad and astar materials.
+                    Tata Matching Center, Bilimora, Gujarat 396321
+                    બીલીમોરા ટાટા મેચિંગ સેન્ટર, ફેબ્રિક સ્ટોર, કૉટન્સ
+                    matching 
                   </p>
+                  
+                  {/* Google Maps */}
+                  <div className="mb-6">
+                    <h5 className="text-sm font-semibold mb-3 text-gray-700">Find Us</h5>
+                    <div className="rounded-lg overflow-hidden shadow-lg">
+                      <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d833.9005256000864!2d72.96285038691514!3d20.769065650298565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0efe9dc289677%3A0x733c4afcff8440ed!2sBilimora%20Tata%20matching%20center%2C%20fabric%20shop%2Ccotton!5e0!3m2!1sen!2sin!4v1759578533062!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="300" 
+                        style={{border: 0}} 
+                        allowFullScreen 
+                        loading="lazy" 
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Tata Matching Center Location"
+                      />
+                    </div>
+                  </div>
+                  
                   <div className="space-y-2 text-sm">
                     <p><strong>Address:</strong> Bilimora, Gujarat 396321</p>
                     <p><strong>Phone:</strong> +91 77780 36741</p>
